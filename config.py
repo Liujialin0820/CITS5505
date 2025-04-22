@@ -9,4 +9,4 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL") or default_database_location
     SECRET_KEY = "amber_pearl_latte_is_the_best"
 
-    CMS_USER_ID = ""
+    CMS_USER_ID = "cmsuserid"
