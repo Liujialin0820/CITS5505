@@ -4,7 +4,7 @@ from apps.front import bp as front_bp
 from apps.common import bp as common_bp
 from config import Config
 from exts import db, migrate
-
+from flask_wtf import CSRFProtect
 
 def create_app():
     app = Flask(__name__)
@@ -18,6 +18,7 @@ def create_app():
     from apps.common import models
     db.init_app(app)
     migrate.init_app(app, db)
+    CSRFProtect(app)
     
     return app
 

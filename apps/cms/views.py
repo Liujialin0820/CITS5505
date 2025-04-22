@@ -24,6 +24,12 @@ def logout():
     return redirect(url_for("cms.login"))
 
 
+@bp.route("/profile/")
+@login_required
+def profile():
+    return render_template("cms/cms_profile.html")
+
+
 @bp.route("/")
 @login_required
 def index():

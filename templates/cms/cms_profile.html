@@ -1,0 +1,30 @@
+{% extends 'cms/cms_base.html' %} 
+
+{% block title %} 
+  Profile 
+{% endblock %} 
+
+{%block page_title %} 
+  {{ self.title() }} 
+{% endblock %} 
+
+
+{% block main_content %}
+{% set user = g.cms_user %}
+<table class="table table-bordered">
+  <tbody>
+    <tr>
+      <td>Username:</td>
+      <td>{{ user.username }}</td>
+    </tr>
+    <tr>
+      <td>Email:</td>
+      <td>{{ user.email }}</td>
+    </tr>
+    <tr>
+      <td>Join Date:</td>
+      <td>{{ user.join_time }}</td>
+    </tr>
+  </tbody>
+</table>
+{% endblock %}
