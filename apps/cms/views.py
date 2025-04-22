@@ -7,12 +7,14 @@ from flask import (
     redirect,
     url_for,
     g,
+    jsonify,
 )
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, ResetpwdForm
 from .models import CMSUser
 from exts import db
 from .decorators import login_required
 from config import Config
+from utils import restful
 
 bp = Blueprint("cms", __name__, url_prefix="/cms")
 
@@ -69,6 +71,11 @@ class RegisterView(views.MethodView):
             username = form.username.data
             email = form.email.data
             password = form.password.data
+            security_code = form.security_code.data
+
+            if security_code != Config.SECRET_KEY:
+                message = "Security code error. Please contact the administrator."
+                return self.get(message=message)
 
             # check if already registered
             existing_user = CMSUser.query.filter_by(email=email).first()
@@ -86,5 +93,28 @@ class RegisterView(views.MethodView):
             return self.get(message=message)
 
 
+class ResetPwdView(views.MethodView):
+    decorators = [login_required]
+
+    def get(self):
+        return render_template("cms/cms_resetpwd.html")
+
+    def post(self):
+        form = ResetpwdForm(request.form)
+        if form.validate():
+            oldpwd = form.oldpwd.data
+            newpwd = form.newpwd.data
+            user = g.cms_user
+            if user.check_password(oldpwd):
+                user.password = newpwd
+                db.session.commit()
+                return restful.success()
+            else:
+                return restful.params_error("wrong password!")
+        else:
+            return restful.params_error(form.get_error())
+
+
 bp.add_url_rule("/login/", view_func=LoginView.as_view("login"))
-bp.add_url_rule("/register", view_func=RegisterView.as_view("register"))
+bp.add_url_rule("/register/", view_func=RegisterView.as_view("register"))
+bp.add_url_rule("/resetpwd/", view_func=ResetPwdView.as_view("resetpwd"))

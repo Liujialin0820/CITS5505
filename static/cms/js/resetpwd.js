@@ -1,11 +1,6 @@
-/**
- * Created by hynev on 2017/11/25.
- */
-
 $(function () {
     $("#submit").click(function (event) {
         // event.preventDefault
-        // 是阻止按钮默认的提交表单的事件
         event.preventDefault();
 
         var oldpwdE = $("input[name=oldpwd]");
@@ -16,8 +11,6 @@ $(function () {
         var newpwd = newpwdE.val();
         var newpwd2 = newpwd2E.val();
 
-        // 1. 要在模版的meta标签中渲染一个csrf-token
-        // 2. 在ajax请求的头部中设置X-CSRFtoken
         zlajax.post({
             'url': '/cms/resetpwd/',
             'data': {

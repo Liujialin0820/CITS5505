@@ -1,8 +1,3 @@
-/**
- * Created by hynev on 2017/11/10.
- */
-// 对jquery的ajax的封装
-
 'use strict';
 var zlajax = {
 	'get':function(args) {
@@ -14,7 +9,7 @@ var zlajax = {
 		this.ajax(args);
 	},
 	'ajax':function(args) {
-		// 设置csrftoken
+		// set csrftoken
 		this._ajaxSetup();
 		$.ajax(args);
 	},
