@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>Register - Class Management System</title>
+
+    <!-- Bootstrap core CSS -->
+    <link
+      href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Custom styles for this template -->
+    <link
+      href="{{ url_for('static',filename='cms/css/signin.css') }}"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <form class="form-signin" method="post">
+        <h2 class="form-signin-heading">Create Account</h2>
+
+        <label for="inputUsername" class="sr-only">Username:</label>
+        <input
+          type="text"
+          id="inputUsername"
+          class="form-control"
+          placeholder="Username"
+          name="username"
+          required
+          autofocus
+        />
+
+        <label for="inputEmail" class="sr-only">Email:</label>
+        <input
+          type="email"
+          id="inputEmail"
+          class="form-control"
+          placeholder="Email"
+          name="email"
+          required
+        />
+
+        <label for="inputPassword" class="sr-only">Password:</label>
+        <input
+          type="password"
+          id="inputPassword"
+          class="form-control"
+          placeholder="Password"
+          name="password"
+          required
+        />
+
+        <label for="confirmPassword" class="sr-only">Confirm Password:</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          class="form-control"
+          placeholder="Confirm Password"
+          name="confirm_password"
+          required
+        />
+
+        <button class="btn btn-lg btn-success btn-block" type="submit">
+          Register
+        </button>
+        <p style="text-align: center; margin-top: 10px">
+          Already have an account?
+          <a href="{{ url_for('cms.login') }}">Login here</a>
+        </p>
+      </form>
+
+      {% if message %}
+      <p style="text-align: center" class="text-danger">{{ message }}</p>
+      {% endif %}
+    </div>
+  </body>
+</html>
