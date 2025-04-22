@@ -2,13 +2,15 @@ from flask import Blueprint, views, render_template, request, session, redirect,
 from .forms import LoginForm, RegisterForm
 from .models import CMSUser
 from exts import db
-
+from .decorators import login_required
+from config import Config
 bp = Blueprint("cms", __name__, url_prefix="/cms")
 
 
 @bp.route("/")
+@login_required
 def index():
-    return "cms index"
+    return render_template('cms/cms_index.html')
 
 
 class LoginView(views.MethodView):
@@ -23,7 +25,7 @@ class LoginView(views.MethodView):
             remember = form.remember.data
             user = CMSUser.query.filter_by(email=email).first()
             if user and user.check_password(password):
-                session["user_id"] = user.id
+                session[Config.CMS_USER_ID] = user.id
                 if remember:
                     session.permanent = True
                 return redirect(url_for("cms.index"))

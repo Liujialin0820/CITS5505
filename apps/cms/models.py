@@ -26,3 +26,4 @@ class CMSUser(db.Model):
     def check_password(self,raw_password):
         result = check_password_hash(self.password,raw_password)
         return result
+
