@@ -2,6 +2,7 @@ from wtforms import Form, StringField, IntegerField
 from wtforms.validators import Email, InputRequired, Length, EqualTo
 from ..common.forms import BaseForm
 
+
 class LoginForm(Form):
     email = StringField(validators=[Email(), InputRequired()])
     password = StringField(validators=[Length(6, 20)])
@@ -21,6 +22,14 @@ class RegisterForm(Form):
 
 
 class ResetpwdForm(BaseForm):
-    oldpwd = StringField(validators=[Length(6,20)])
-    newpwd = StringField(validators=[Length(6,20)])
+    oldpwd = StringField(validators=[Length(6, 20)])
+    newpwd = StringField(validators=[Length(6, 20)])
     newpwd2 = StringField(validators=[EqualTo("newpwd")])
+
+
+class AddBoardForm(BaseForm):
+    name = StringField(validators=[InputRequired()])
+
+
+class UpdateBoardForm(AddBoardForm):
+    board_id = IntegerField(validators=[InputRequired()])

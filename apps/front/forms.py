@@ -18,7 +18,7 @@ class SignupForm(BaseForm):
         validators=[
             Regexp(
                 r"[0-9a-zA-Z_\.]{6,20}",
-                message="Please enter a valid passwor1d (6-20 characters).",
+                message="Please enter a valid password (6-20 characters).",
             )
         ]
     )
@@ -33,8 +33,9 @@ class SigninForm(BaseForm):
         validators=[
             Regexp(
                 r"[0-9a-zA-Z_\.]{6,20}",
-                message="Please enter a valid password (6–20 characters).",
+                message="Please enter a valid password (6-20 characters).",
             )
         ]
     )
     remember = StringField()
+

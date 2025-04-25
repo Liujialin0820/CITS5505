@@ -9,12 +9,19 @@ from flask import (
     g,
     jsonify,
 )
-from .forms import LoginForm, RegisterForm, ResetpwdForm
+from .forms import (
+    LoginForm,
+    RegisterForm,
+    ResetpwdForm,
+    AddBoardForm,
+    UpdateBoardForm,
+)
 from .models import CMSUser
 from exts import db
 from .decorators import login_required
 from config import Config
 from utils import restful
+from apps.common.models import BoardModel
 
 bp = Blueprint("cms", __name__, url_prefix="/cms")
 
@@ -24,18 +31,6 @@ bp = Blueprint("cms", __name__, url_prefix="/cms")
 def logout():
     del session[Config.CMS_USER_ID]
     return redirect(url_for("cms.login"))
-
-
-@bp.route("/profile/")
-@login_required
-def profile():
-    return render_template("cms/cms_profile.html")
-
-
-@bp.route("/")
-@login_required
-def index():
-    return render_template("cms/cms_index.html")
 
 
 class LoginView(views.MethodView):
@@ -113,6 +108,74 @@ class ResetPwdView(views.MethodView):
                 return restful.params_error("wrong password!")
         else:
             return restful.params_error(form.get_error())
+
+
+@bp.route("/")
+@login_required
+def index():
+    return render_template("cms/cms_index.html")
+
+
+@bp.route("/profile/")
+@login_required
+def profile():
+    return render_template("cms/cms_profile.html")
+
+
+@bp.route("/boards/")
+@login_required
+def boards():
+    board_models = BoardModel.query.all()
+    context = {"boards": board_models}
+    return render_template("cms/cms_boards.html", **context)
+
+
+@bp.route("/aboard/", methods=["POST"])
+@login_required
+def aboard():
+    form = AddBoardForm(request.form)
+    if form.validate():
+        name = form.name.data
+        board = BoardModel(name=name)
+        db.session.add(board)
+        db.session.commit()
+        return restful.success()
+    else:
+        return restful.params_error(message=form.get_error())
+
+
+@bp.route("/uboard/", methods=["POST"])
+@login_required
+def uboard():
+    form = UpdateBoardForm(request.form)
+    if form.validate():
+        board_id = form.board_id.data
+        name = form.name.data
+        board = BoardModel.query.get(board_id)
+        if board:
+            board.name = name
+            db.session.commit()
+            return restful.success()
+        else:
+            return restful.params_error(message="没有这个板块！")
+    else:
+        return restful.params_error(message=form.get_error())
+
+
+@bp.route("/dboard/", methods=["POST"])
+@login_required
+def dboard():
+    board_id = request.form.get("board_id")
+    if not board_id:
+        return restful.params_error("请传入板块id！")
+
+    board = BoardModel.query.get(board_id)
+    if not board:
+        return restful.params_error(message="没有这个板块！")
+
+    db.session.delete(board)
+    db.session.commit()
+    return restful.success()
 
 
 bp.add_url_rule("/login/", view_func=LoginView.as_view("login"))

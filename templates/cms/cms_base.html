@@ -49,14 +49,14 @@
                 <li class="profile-li">
                     <a href="#">Profile Center<span></span></a>
                     <ul class="subnav">
-                        <li><a href="{{ url_for('cms.profile')}}">Personal Information</a></li>
-                        <li><a href="{{ url_for('cms.resetpwd')}}">Change Password</a></li>
+                        <li><a href="{{ url_for('cms.profile')}}">Info</a></li>
+                        <li><a href="{{ url_for('cms.resetpwd')}}">Password</a></li>
                     </ul>
                 </li>
 
                 <li class="nav-group post-manage"><a href="#">Post Management</a></li>
                 <li class="comments-manage"><a href="#">Comment Management</a></li>
-                <li class="board-manage"><a href="#">Board Management</a></li>
+                <li class="board-manage"><a href="{{ url_for('cms.boards')}}">Board Management</a></li>
 
                 <li class="nav-group user-manage"><a href="#">User Management</a></li>
                 <li class="role-manage"><a href="#">Group Management</a></li>
