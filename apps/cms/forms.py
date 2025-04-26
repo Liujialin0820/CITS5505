@@ -1,6 +1,8 @@
 from wtforms import Form, StringField, IntegerField
-from wtforms.validators import Email, InputRequired, Length, EqualTo
+from wtforms.validators import Email, InputRequired, Length, EqualTo, NumberRange
 from ..common.forms import BaseForm
+from flask_wtf import FlaskForm
+from wtforms.validators import DataRequired
 
 
 class LoginForm(Form):
@@ -13,7 +15,7 @@ class RegisterForm(Form):
     username = StringField(validators=[InputRequired(message="Username required")])
     email = StringField(validators=[Email(message="Invalid email"), InputRequired()])
     password = StringField(
-        validators=[Length(6, 20, message="Password must be 6–20 characters")]
+        validators=[Length(6, 20, message="Password must be 6-20 characters")]
     )
     confirm_password = StringField(
         validators=[EqualTo("password", message="Passwords must match")]
@@ -27,9 +29,21 @@ class ResetpwdForm(BaseForm):
     newpwd2 = StringField(validators=[EqualTo("newpwd")])
 
 
-class AddBoardForm(BaseForm):
+class AddcourseForm(BaseForm):
     name = StringField(validators=[InputRequired()])
 
 
-class UpdateBoardForm(AddBoardForm):
-    board_id = IntegerField(validators=[InputRequired()])
+class UpdatecourseForm(AddcourseForm):
+    course_id = IntegerField(validators=[InputRequired()])
+
+
+class AddTimeslotForm(FlaskForm):
+    course_id = IntegerField(validators=[DataRequired()])
+    day_of_week = IntegerField(validators=[DataRequired(), NumberRange(1, 7)])
+    hour = IntegerField(validators=[DataRequired(), NumberRange(0, 23)])
+
+
+class UpdateTimeslotForm(FlaskForm):
+    timeslot_id = IntegerField(validators=[DataRequired()])
+    day_of_week = IntegerField(validators=[DataRequired(), NumberRange(1, 7)])
+    hour = IntegerField(validators=[DataRequired(), NumberRange(0, 23)])

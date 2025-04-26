@@ -1,0 +1,98 @@
+/* cms/static/cms/css/course.css */
+
+/* 顶部操作区 */
+.top-box {
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .top-box .btn {
+    margin-top: 0;
+  }
+  
+  /* 课程表格 */
+  .table {
+    background-color: #fff;
+  }
+  .table th,
+  .table td {
+    vertical-align: middle !important;
+    text-align: left;
+  }
+  .table th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+  }
+  
+  /* 时段列表 */
+  .list-unstyled {
+    padding-left: 0;
+    margin-bottom: 0;
+  }
+  .list-unstyled li {
+    line-height: 1.6;
+    padding: 4px 0;
+    border-bottom: 1px dashed #e0e0e0;
+  }
+  .list-unstyled li:last-child {
+    border-bottom: none;
+  }
+  
+  /* “Add slot” 按钮 */
+  .add-timeslot-btn {
+    margin-top: 8px;
+  }
+  
+  /* 小尺寸链接按钮 */
+  .edit-timeslot-btn,
+  .delete-timeslot-btn {
+    padding: 0 4px;
+    font-size: 12px;
+  }
+  .delete-timeslot-btn {
+    color: #d9534f;
+  }
+  .delete-timeslot-btn:hover {
+    text-decoration: underline;
+  }
+  
+  /* “Add New course” 按钮 */
+  #add-course-btn {
+    font-size: 14px;
+  }
+  
+  /* Modal 弹窗 */
+  #timeslotModal .modal-dialog {
+    max-width: 360px;
+  }
+  #timeslotModal .modal-header {
+    background-color: #337ab7;
+    color: #fff;
+    border-bottom: none;
+  }
+  #timeslotModal .modal-title {
+    margin: 0;
+    font-size: 18px;
+  }
+  #timeslotModal .modal-body {
+    padding: 20px;
+  }
+  #timeslotModal .form-group label {
+    font-weight: 500;
+  }
+  #timeslotModal .modal-footer {
+    padding: 10px 20px;
+  }
+  #save-timeslot-btn {
+    min-width: 80px;
+  }
+  
+  /* 响应式调整 */
+  @media (max-width: 480px) {
+    .table-responsive {
+      overflow-x: auto;
+    }
+    #timeslotModal .modal-dialog {
+      width: 90%;
+    }
+  }
+  

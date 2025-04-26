@@ -13,15 +13,18 @@ from .forms import (
     LoginForm,
     RegisterForm,
     ResetpwdForm,
-    AddBoardForm,
-    UpdateBoardForm,
+    AddcourseForm,
+    UpdatecourseForm,
+    AddTimeslotForm,
+    UpdateTimeslotForm,
 )
 from .models import CMSUser
 from exts import db
 from .decorators import login_required
 from config import Config
 from utils import restful
-from apps.common.models import BoardModel
+from apps.common.models import CourseModel, WeeklyTimeSlot
+
 
 bp = Blueprint("cms", __name__, url_prefix="/cms")
 
@@ -48,7 +51,7 @@ class LoginView(views.MethodView):
                 session[Config.CMS_USER_ID] = user.id
                 if remember:
                     session.permanent = True
-                return redirect(url_for("cms.index"))
+                return redirect(url_for("cms.courses"))
             else:
                 return self.get(message="email or password error")
         else:
@@ -122,38 +125,38 @@ def profile():
     return render_template("cms/cms_profile.html")
 
 
-@bp.route("/boards/")
+@bp.route("/courses/")
 @login_required
-def boards():
-    board_models = BoardModel.query.all()
-    context = {"boards": board_models}
-    return render_template("cms/cms_boards.html", **context)
+def courses():
+    course_models = CourseModel.query.all()
+    context = {"courses": course_models}
+    return render_template("cms/cms_courses.html", **context)
 
 
-@bp.route("/aboard/", methods=["POST"])
+@bp.route("/acourse/", methods=["POST"])
 @login_required
-def aboard():
-    form = AddBoardForm(request.form)
+def acourse():
+    form = AddcourseForm(request.form)
     if form.validate():
         name = form.name.data
-        board = BoardModel(name=name)
-        db.session.add(board)
+        course = CourseModel(name=name)
+        db.session.add(course)
         db.session.commit()
         return restful.success()
     else:
         return restful.params_error(message=form.get_error())
 
 
-@bp.route("/uboard/", methods=["POST"])
+@bp.route("/ucourse/", methods=["POST"])
 @login_required
-def uboard():
-    form = UpdateBoardForm(request.form)
+def ucourse():
+    form = UpdatecourseForm(request.form)
     if form.validate():
-        board_id = form.board_id.data
+        course_id = form.course_id.data
         name = form.name.data
-        board = BoardModel.query.get(board_id)
-        if board:
-            board.name = name
+        course = CourseModel.query.get(course_id)
+        if course:
+            course.name = name
             db.session.commit()
             return restful.success()
         else:
@@ -162,18 +165,63 @@ def uboard():
         return restful.params_error(message=form.get_error())
 
 
-@bp.route("/dboard/", methods=["POST"])
+@bp.route("/dcourse/", methods=["POST"])
 @login_required
-def dboard():
-    board_id = request.form.get("board_id")
-    if not board_id:
+def dcourse():
+    course_id = request.form.get("course_id")
+    if not course_id:
         return restful.params_error("请传入板块id！")
 
-    board = BoardModel.query.get(board_id)
-    if not board:
+    course = CourseModel.query.get(course_id)
+    if not course:
         return restful.params_error(message="没有这个板块！")
 
-    db.session.delete(board)
+    db.session.delete(course)
+    db.session.commit()
+    return restful.success()
+
+
+@bp.route("/add_timeslot/", methods=["POST"])
+@login_required
+def add_timeslot():
+    form = AddTimeslotForm(request.form)
+    if form.validate():
+        course = CourseModel.query.get(form.course_id.data)
+        if not course:
+            return restful.params_error("Course doesn't exist")
+        try:
+            course.add_weekly_timeslot(
+                day_of_week=form.day_of_week.data, hour=form.hour.data
+            )
+            return restful.success()
+        except ValueError as e:
+            return restful.params_error(str(e))
+    return restful.params_error(form.get_error())
+
+
+@bp.route("/utimeslot/", methods=["POST"])
+@login_required
+def update_timeslot():
+    form = UpdateTimeslotForm(request.form)
+    if form.validate():
+        slot = WeeklyTimeSlot.query.get(form.timeslot_id.data)
+        if not slot:
+            return restful.params_error("Timeslot not found")
+        slot.day_of_week = form.day_of_week.data
+        slot.hour = form.hour.data
+        db.session.commit()
+        return restful.success()
+    return restful.params_error(form.get_error())
+
+
+@bp.route("/dtimeslot/", methods=["POST"])
+@login_required
+def delete_timeslot():
+    timeslot_id = request.form.get("timeslot_id")
+    slot = WeeklyTimeSlot.query.get(timeslot_id)
+    if not slot:
+        return restful.params_error("Timeslot not found")
+    db.session.delete(slot)
     db.session.commit()
     return restful.success()
 

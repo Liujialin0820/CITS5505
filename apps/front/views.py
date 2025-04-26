@@ -4,7 +4,7 @@ from utils import restful
 from .models import FrontUser
 from exts import db
 from config import Config
-from apps.common.models import BoardModel
+from apps.common.models import CourseModel
 from .decorators import login_required
 
 bp = Blueprint("front", __name__)
@@ -13,9 +13,9 @@ bp = Blueprint("front", __name__)
 @bp.route("/")
 @login_required
 def index():
-    boards = BoardModel.query.all()
+    courses = CourseModel.query.all()
     context = {
-        "boards": boards,
+        "courses": courses,
     }
     return render_template("front/front_dashboard.html", **context)
 
@@ -73,5 +73,17 @@ class SigninView(views.MethodView):
             return restful.params_error(message=form.get_error())
 
 
+class TimetableView(views.MethodView):
+    def get(self):
+        return render_template("front/time_table.html")
+
+
+class PreferenceView(views.MethodView):
+    def get(self):
+        return render_template("front/preference.html")
+
+
 bp.add_url_rule("/signup/", view_func=SignupView.as_view("signup"))
 bp.add_url_rule("/signin/", view_func=SigninView.as_view("signin"))
+bp.add_url_rule("/timetable/", view_func=TimetableView.as_view("timetable"))
+bp.add_url_rule("/preference/", view_func=PreferenceView.as_view("preference"))
