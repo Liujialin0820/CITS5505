@@ -1,0 +1,64 @@
+{% extends 'front/front_base.html' %}
+
+{% block title %}
+    Class Management System
+{% endblock %}
+
+{% block head %}
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='front/css/front_dashboard.css') }}"
+    />
+{% endblock %}
+
+{% block main_content %}
+<div class="header">Saturday, April 26, 2025</div>
+      <div class="info-box">
+        During the preference entry period, please enter your preferences, refer
+        to the <a href="#">Student FAQs</a> for guidance on how to enter
+        preferences. If you have units not appearing in CAS, please see
+        <a href="#">My unit is not in CAS</a>.<br /><br />
+        During the review and adjust period, ensure you are allocated to classes
+        for all your units. Refer to <a href="#">Student FAQs</a> for help
+        adjusting allocations.<br /><br />
+        Need assistance with CAS? Submit a <a href="#">CAS Help Request</a>.
+      </div>
+      <div class="section-title">Action Required</div>
+      <p>No actions required</p>
+    </div>
+    <div class="events-panel">
+      <h3>Upcoming events</h3>
+      <div class="event">
+        <time>28 Apr Mon<br />12:00 am - 01:00 am</time>
+        <div class="event-title">CITS3301 - Lecture-01</div>
+      </div>
+      <div class="event">
+        <time>28 Apr Mon<br />06:00 pm - 08:00 pm</time>
+        <div class="event-title">PHIL4100 - Wshp-01</div>
+      </div>
+      <div class="event">
+        <time>28 Apr Mon<br />07:00 pm - 09:00 pm</time>
+        <div class="event-title">CITS5508 - LecTut-01</div>
+      </div>
+      <div class="event">
+        <time>28 Apr Mon<br />08:00 pm - 10:00 pm</time>
+        <div class="event-title">CITS3301 - Workshop-01</div>
+      </div>
+      <div class="event">
+        <time>30 Apr Wed<br />01:00 am - 03:00 am</time>
+        <div class="event-title">CITS5505 - Lecture-01</div>
+      </div>
+      <div class="event">
+        <time>1 May Thu<br />06:00 pm - 08:00 pm</time>
+        <div class="event-title">CITS5505 - LecTut-01</div>
+      </div>
+      <div class="event">
+        <time>5 May Mon<br />12:00 am - 01:00 am</time>
+        <div class="event-title">CITS3301 - Lecture-01</div>
+      </div>
+      <div class="event">
+        <time>5 May Mon<br />06:00 pm - 08:00 pm</time>
+        <div class="event-title">PHIL4100 - Wshp-01</div>
+      </div>
+      <a href="#" class="bottom-link">View All →</a>
+{% endblock %}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock %}</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='front/css/front_index.css') }}"
+    />
+    {% block head %} {% endblock %}
+  </head>
+
+  <body>
+    <div class="sidebar">
+      <div>
+        <img
+          src="{{ url_for('static',filename='common/images/logo.png')}}"
+          alt="Logo"
+          width="80"
+        />
+        <nav>
+          <a href="#">Dashboard</a>
+          <a href="#">Timetable</a>
+          <a href="#">Preference</a>
+          <a href="#">Settings</a>
+        </nav>
+      </div>
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="user-info">
+            <svg
+              class="user-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="currentColor"
+                d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zm0 
+                       2c-3.314 0-10 1.672-10 5v3h20v-3c0-3.328-6.686-5-10-5z"
+              />
+            </svg>
+            <div class="details">
+              <span class="name">{{g.user.username}}</span>
+              <span class="id">{{g.user.stu_id}}</span>
+            </div>
+          </div>
+          <a href="{{ url_for ('front.logout')}}" class="logout-btn">
+            <svg
+              class="logout-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="currentColor"
+                d="M16 17l5-5-5-5v3H9v4h7v3zM4 4h8v2H4v12h8v2H4a2 2 0 01-2-2V6a2 2 
+                   0 012-2z"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="main-content">{% block main_content %} {% endblock %}</div>
+  </body>
+</html>

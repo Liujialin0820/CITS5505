@@ -22,6 +22,14 @@ class SignupForm(BaseForm):
             )
         ]
     )
+    stu_id = StringField(
+        validators=[
+            Regexp(
+                r"[0-9a-zA-Z_\.]{6,20}",
+                message="Please enter a valid student id (6-20 characters).",
+            )
+        ]
+    )
     password2 = StringField(
         validators=[EqualTo("password1", message="Passwords do not match.")]
     )
@@ -38,4 +46,3 @@ class SigninForm(BaseForm):
         ]
     )
     remember = StringField()
-
