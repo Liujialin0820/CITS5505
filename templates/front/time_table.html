@@ -12,5 +12,98 @@
 {% endblock %}
 
 {% block main_content %}
-Timetable
+<div class="scrollable-content">
+    <div class="content-wrapper">
+        <div class="calendar-wrapper">
+            <h2 class="calendar-title">Weekly Timetable</h2>
+
+            <!-- 表头区域 -->
+            <div class="calendar-header-row">
+                <div class="calendar-header-spacer"></div>
+                <div class="calendar-header">Monday</div>
+                <div class="calendar-header">Tuesday</div>
+                <div class="calendar-header">Wednesday</div>
+                <div class="calendar-header">Thursday</div>
+                <div class="calendar-header">Friday</div>
+                <div class="calendar-header">Saturday</div>
+                <div class="calendar-header">Sunday</div>
+            </div>
+
+            <!-- 内容区域 -->
+            <div class="calendar-body">
+                <div class="calendar-grid">
+                    {% for hour in range(0, 24) %}
+                        <div class="calendar-time">
+                            {% if hour == 0 %}
+                                12:00 AM
+                            {% elif hour < 12 %}
+                                {{ hour }}:00 AM
+                            {% elif hour == 12 %}
+                                12:00 PM
+                            {% else %}
+                                {{ hour-12 }}:00 PM
+                            {% endif %}
+                        </div>
+
+                        {% for day in range(7) %}
+                            {% if hour <= 8 or hour >= 19 %}
+                                <div class="calendar-cell inactive-cell"></div>
+                            {% else %}
+                                <div class="calendar-cell"></div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Upcoming Events -->
+        <div class="events-panel">
+            <h3>Upcoming events</h3>
+            <div class="event">
+                <time>28 Apr Mon<br />12:00 am - 01:00 am</time>
+                <div class="event-title">CITS3301 - Lecture-01</div>
+            </div>
+            <div class="event">
+                <time>28 Apr Mon<br />06:00 pm - 08:00 pm</time>
+                <div class="event-title">PHIL4100 - Wshp-01</div>
+            </div>
+            <div class="event">
+                <time>28 Apr Mon<br />07:00 pm - 09:00 pm</time>
+                <div class="event-title">CITS5508 - LecTut-01</div>
+            </div>
+            <div class="event">
+                <time>28 Apr Mon<br />08:00 pm - 10:00 pm</time>
+                <div class="event-title">CITS3301 - Workshop-01</div>
+            </div>
+            <div class="event">
+                <time>30 Apr Wed<br />01:00 am - 03:00 am</time>
+                <div class="event-title">CITS5505 - Lecture-01</div>
+            </div>
+            <div class="event">
+                <time>1 May Thu<br />06:00 pm - 08:00 pm</time>
+                <div class="event-title">CITS5505 - LecTut-01</div>
+            </div>
+            <div class="event">
+                <time>5 May Mon<br />12:00 am - 01:00 am</time>
+                <div class="event-title">CITS3301 - Lecture-01</div>
+            </div>
+            <div class="event">
+                <time>5 May Mon<br />06:00 pm - 08:00 pm</time>
+                <div class="event-title">PHIL4100 - Wshp-01</div>
+            </div>
+            <a href="#" class="bottom-link">View All →</a>
+        </div>
+
+    </div> <!-- content-wrapper end -->
+</div> <!-- scrollable-content end -->
+<script>
+    window.addEventListener('load', function () {
+      const body = document.querySelector('.calendar-body');
+      if (body) {
+        body.scrollTop = 540; // Scroll to 9:00 AM
+      }
+    });
+  </script>
 {% endblock %}

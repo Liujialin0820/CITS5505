@@ -12,6 +12,33 @@
 {% endblock %}
 
 {% block main_content %}
+<<<<<<< HEAD
 preference 
 this page is used for Student to choose course
+=======
+
+<h2>Select or Add Your Courses</h2>
+
+<!-- 选择已有课程 -->
+<form method="POST" action="{{ url_for('front.preference') }}">
+    <div class="form-group">
+        <label for="courses">Choose from existing courses:</label>
+        <select multiple name="courses" class="form-control">
+            <option value="CITS5505">CITS5505 - Data Analytics</option>
+            <option value="CITS5508">CITS5508 - Big Data</option>
+            <option value="CITS3403">CITS3403 - Web Development</option>
+            <option value="PHIL4100">PHIL4100 - Philosophy</option>
+        </select>
+    </div>
+
+    <!-- 手动新增课程 -->
+    <div class="form-group mt-4">
+        <label for="new_course">Add a new course:</label>
+        <input type="text" name="new_course" placeholder="Course Name" class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+</form>
+
+>>>>>>> 24088207_Thant
 {% endblock %}

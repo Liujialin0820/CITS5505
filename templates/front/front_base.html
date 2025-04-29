@@ -24,12 +24,13 @@
           width="80"
         />
         <nav>
-          <a href="#">Dashboard</a>
+          <a href="{{ url_for('front.index') }}">Dashboard</a>
           <a href="{{url_for('front.timetable')}}">Timetable</a>
           <a href="{{url_for('front.preference')}}">Preference</a>
           <a href="#">Settings</a>
         </nav>
       </div>
+      
       <div class="sidebar-footer">
         <div class="user-profile">
           <div class="user-info">
@@ -66,5 +67,7 @@
       </div>
     </div>
     <div class="main-content">{% block main_content %} {% endblock %}</div>
+
+    
   </body>
 </html>

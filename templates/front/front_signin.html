@@ -10,24 +10,28 @@
 {% endblock %}
 
 {% block h2_block %}
-    Login in Class Management System
+    <p>Login in Class Management System</p>
 {% endblock %}
 
 {% block signbox %}
     <div class="form-group">
-        <input type="text" class="form-control" name="email" placeholder="email">
+        <input type="text" class="form-control" name="email" placeholder="Enter Student Email">
     </div>
+
     <div class="form-group">
-        <input type="password" class="form-control" name="password" placeholder="password">
+        <input type="password" class="form-control" name="password" placeholder="Enter Password">
     </div>
+
     <div class="checkbox">
         <label>
             <input type="checkbox" name="remember" value="1" checked>Remember Me 
         </label>
     </div>
+    
     <div class="form-group">
         <button class="btn btn-warning btn-block" id="submit-btn">Login</button>
     </div>
+
     <div class="form-group">
         <a href="{{ url_for("front.signup") }}" class="signup-link">Register</a>
         <a href="#" class="resetpwd-link" style="float:right;">Reset Password</a>
