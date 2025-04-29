@@ -58,3 +58,12 @@
   font-size: 14px;
   color: #2563eb;
 }
+
+.return-link {
+  color: #2563eb; /* normal text color */
+  text-decoration: none; /* no underline normally */
+}
+
+.return-link:hover {
+  text-decoration: underline; /* underline on hover */
+}

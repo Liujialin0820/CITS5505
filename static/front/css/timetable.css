@@ -1,0 +1,154 @@
+.scrollable-content {
+    height: 100vh;
+    overflow-y: auto;
+    padding: 20px;
+    background-color: #f9fafb;
+}
+
+.calendar-wrapper {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    max-height: 700px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.calendar-title {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #003087;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: 80px repeat(7, 1fr);
+    grid-template-rows: 50px repeat(24, 60px); /* 24小时版 */
+    background-color: #e5e7eb;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.calendar-header {
+    background-color: #003087;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border-right: 1px solid #d1d5db;
+}
+
+.calendar-time {
+    background-color: #f9fafb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #6b7280;
+    border-bottom: 1px solid #d1d5db;
+}
+
+.calendar-cell {
+    background-color: white;
+    border-right: 1px solid #d1d5db;
+    border-bottom: 1px solid #d1d5db;
+    transition: background-color 0.3s;
+}
+
+.calendar-cell:hover {
+    background-color: #f3f4f6;
+}
+
+.inactive-cell {
+    background-color: rgba(209, 213, 219, 0.5);
+}
+
+
+.events-panel {
+    width: 300px;
+    background-color: #f3f4f6;
+    padding: 20px;
+    border-left: 1px solid #d1d5db;
+    height: fit-content;
+    border-radius: 8px;
+    margin-top: 20px;
+  }
+  
+  .event {
+    margin-bottom: 15px;
+    padding-left: 5px;
+    border-left: 5px solid #003087;
+  }
+  
+  .event time {
+    display: block;
+    font-size: 14px;
+    color: #6b7280;
+  }
+  
+  .event-title {
+    font-weight: 500;
+  }
+  
+  .bottom-link {
+    margin-top: 30px;
+    display: block;
+    text-align: right;
+    font-size: 14px;
+    color: #2563eb;
+  }
+
+.content-wrapper {
+    display: flex;  /* 重点：flexbox水平排列！ */
+    align-items: flex-start;
+    gap: 20px; /* 时间表和活动列表中间空20px */
+}
+
+.calendar-grid .calendar-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #003087;
+}
+
+
+.calendar-wrapper {
+    max-height: 700px;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.calendar-header-row {
+    display: grid;
+    grid-template-columns: 80px repeat(7, 1fr);
+    background-color: #003087;
+    color: white;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+.calendar-header-spacer {
+    width: 80px;
+}
+
+.calendar-body {
+    overflow-y: auto;
+    max-height: 650px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: 80px repeat(7, 1fr);
+    grid-template-rows: repeat(24, 60px);
+    background-color: #e5e7eb;
+}
