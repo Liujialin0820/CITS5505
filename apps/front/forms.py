@@ -1,8 +1,10 @@
 # encoding: utf-8
 
 from ..common.forms import BaseForm
-from wtforms import StringField
 from wtforms.validators import Regexp, EqualTo, Email, InputRequired
+from flask_wtf import FlaskForm
+from wtforms import StringField, IntegerField
+from wtforms.validators import DataRequired
 
 
 class SignupForm(BaseForm):
@@ -17,8 +19,8 @@ class SignupForm(BaseForm):
     password1 = StringField(
         validators=[
             Regexp(
-                r"[0-9a-zA-Z_\.]{6,20}",
-                message="Please enter a valid password (6-20 characters).",
+                r"^(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z_\.]{6,20}$",
+                message="Password must be 6-20 characters and include both uppercase and lowercase letters.",
             )
         ]
     )
@@ -46,3 +48,8 @@ class SigninForm(BaseForm):
         ]
     )
     remember = StringField()
+
+
+class EnrollmentForm(FlaskForm):
+    user_id = StringField(validators=[DataRequired()])
+    timeslot_id = IntegerField(validators=[DataRequired()])

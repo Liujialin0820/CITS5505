@@ -40,3 +40,17 @@ class FrontUser(db.Model):
 
     def check_password(self, rawpwd):
         return check_password_hash(self._password, rawpwd)
+
+
+
+
+class Enrollment(db.Model):
+    __tablename__ = "enrollment"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.String(100), db.ForeignKey("front_user.id"), nullable=False)
+    timeslot_id = db.Column(db.Integer, db.ForeignKey("weekly_timeslot.id"), nullable=False)
+    enroll_time = db.Column(db.DateTime, default=datetime.now)
+
+    # back-populates
+    # user = db.relationship("FrontUser", back_populates="enrollments")
+    timeslot = db.relationship("WeeklyTimeSlot", back_populates="enrollments")

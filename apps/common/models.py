@@ -42,3 +42,9 @@ class WeeklyTimeSlot(db.Model):
         db.Integer, db.ForeignKey("course.id", ondelete="CASCADE"), nullable=False
     )
     course = db.relationship("CourseModel", back_populates="timeslots")
+    # 新增：某个时段的所有选课记录
+    enrollments = db.relationship(
+        "Enrollment", back_populates="timeslot", cascade="all, delete-orphan"
+    )
+    
+    
