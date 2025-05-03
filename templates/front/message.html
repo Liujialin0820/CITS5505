@@ -4,7 +4,8 @@
 
 <div class="main-content">
   <h2 class="header">Messages</h2>
-
+  <div id="current-user" data-user-id="{{ g.user.id | default('null', true) }}"></div>
+  
   <div>
     <button onclick="openUserSelector()">Select User</button>
     <span id="current-target" style="font-weight: bold;"></span>
@@ -25,63 +26,5 @@
   <ul id="user-list"></ul>
 </div>
 
-<script>
-  let currentUserId = {
-    // { g.user.id | tojson }
-    };
-  let chatTargetId = null;
-
-  function openUserSelector() {
-    fetch('/api/users')
-      .then(res => res.json())
-      .then(data => {
-        const ul = document.getElementById('user-list');
-        ul.innerHTML = '';
-        data.users.forEach(user => {
-          const li = document.createElement('li');
-          li.textContent = user.username;
-          li.onclick = () => {
-            chatTargetId = user.id;
-            document.getElementById('current-target').textContent = 'Chatting with: ' + user.username;
-            document.getElementById('user-selector').style.display = 'none';
-            loadMessages();
-          };
-          ul.appendChild(li);
-        });
-        document.getElementById('user-selector').style.display = 'block';
-      });
-  }
-
-  function loadMessages() {
-    if (!chatTargetId) return;
-    fetch(`/api/messages?with=${chatTargetId}`)
-      .then(res => res.json())
-      .then(data => {
-        const box = document.getElementById('chat-box');
-        box.innerHTML = '';
-        data.messages.forEach(msg => {
-          const p = document.createElement('p');
-          p.textContent = msg.sender + ": " + msg.content;
-          box.appendChild(p);
-        });
-        box.scrollTop = box.scrollHeight;
-      });
-  }
-
-  document.getElementById('message-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    if (!chatTargetId) return;
-    const message = document.getElementById('message-input').value;
-    fetch('/api/send_message', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ receiver_id: chatTargetId, content: message })
-    }).then(() => {
-      document.getElementById('message-input').value = '';
-      loadMessages();
-    });
-  });
-
-  setInterval(loadMessages, 1000);
-</script>
+<script src="{{ url_for('static', filename='front/js/message.js') }}"></script>
 {% endblock %}
