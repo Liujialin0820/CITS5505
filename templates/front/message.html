@@ -1,0 +1,36 @@
+{% extends 'front/front_base.html' %}
+
+{% block title %}
+Messages
+{% endblock %}
+
+{% block main_content %}
+<div class="container mt-4">
+  <h2>Messages</h2>
+  <button id="select-user-btn" class="btn btn-primary mb-2">Select User</button>
+  <div id="current-target" class="mb-3">No user selected</div>
+
+  <div id="user-selector" style="display:none; margin-bottom: 1rem;">
+    <ul id="user-list" style="list-style: none; padding-left: 0;"></ul>
+  </div>
+  
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+
+
+  <div id="chat-box" style="border: 1px solid #ccc; height: 200px; overflow-y: scroll; padding: 10px; margin-bottom: 1rem;"></div>
+
+  <form id="message-form" class="d-flex">
+    <input id="message-input" type="text" class="form-control me-2" placeholder="Type a message..." autocomplete="off" />
+    <button type="submit" class="btn btn-success">Send</button>
+  </form>
+
+  <!-- 隐藏当前用户 ID -->
+  <div id="current-user" data-user-id="{{ current_user_id }}" style="display:none;"></div>
+
+
+  <!-- ✅ 插入脚本在 main_content 尾部 -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="{{ url_for('static', filename='common/zlajax.js') }}"></script>
+  <script src="{{ url_for('static', filename='front/js/message.js') }}"></script>
+</div>
+{% endblock %}

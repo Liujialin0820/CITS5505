@@ -54,3 +54,14 @@ class Enrollment(db.Model):
     # back-populates
     # user = db.relationship("FrontUser", back_populates="enrollments")
     timeslot = db.relationship("WeeklyTimeSlot", back_populates="enrollments")
+
+class Message(db.Model):
+    __tablename__ = "message"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    sender_id = db.Column(db.String(100), db.ForeignKey("front_user.id"), nullable=False)
+    receiver_id = db.Column(db.String(100), db.ForeignKey("front_user.id"), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+    sender = db.relationship("FrontUser", foreign_keys=[sender_id], backref="sent_messages")
+    receiver = db.relationship("FrontUser", foreign_keys=[receiver_id], backref="received_messages")

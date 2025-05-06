@@ -6,6 +6,8 @@ from exts import db
 from config import Config
 from apps.common.models import CourseModel
 from .decorators import login_required
+from sqlalchemy import or_
+from apps.front.models import Message  # 确保你有这个模型
 
 bp = Blueprint("front", __name__)
 
@@ -25,6 +27,92 @@ def index():
 def logout():
     session.clear()
     return redirect(url_for("front.signin"))
+
+from flask import session
+
+from flask import request
+
+@bp.route('/message/')
+@login_required
+def message_page():
+    user_id =  session.get(Config.FRONT_USER_ID)
+    return render_template('front/message.html', current_user_id=user_id)
+
+
+@bp.route("/api/users")
+@login_required
+def get_users():
+    current_user_id = session.get(Config.FRONT_USER_ID)
+    users = FrontUser.query.filter(FrontUser.id != current_user_id).all()
+    return restful.success(data={"users": [{"id": u.id, "username": u.username} for u in users]})
+
+@bp.route("/api/messages")
+@login_required
+def get_messages():
+    current_user_id = session.get(Config.FRONT_USER_ID)
+    target_id = request.args.get("with")
+
+    if not target_id:
+        return restful.params_error(message="Missing target user ID.")
+
+    try:
+        messages = Message.query.filter(
+            or_(
+                (Message.sender_id == current_user_id) & (Message.receiver_id == target_id),
+                (Message.sender_id == target_id) & (Message.receiver_id == current_user_id)
+            )
+        ).order_by(Message.timestamp.asc()).all()
+
+        return restful.success(data={
+            "messages": [
+                {
+                    "sender": m.sender.username if m.sender else m.sender_id,
+                    "content": m.content,
+                    "timestamp": m.timestamp.strftime("%Y-%m-%d %H:%M:%S")
+                }
+                for m in messages
+            ]
+        })
+
+    except Exception as e:
+        print("❌ Error in /api/messages:", str(e))
+        return restful.server_error(message="Internal error fetching messages.")
+
+
+@bp.route("/api/send_message", methods=["POST"])
+@login_required
+def send_message():
+    if not request.is_json:
+        return restful.params_error(message="Expected JSON payload.")
+
+    data = request.get_json(silent=True)
+    if not data:
+        return restful.params_error(message="Invalid or empty JSON.")
+
+    receiver_id = data.get("receiver_id")
+    content = data.get("content")
+
+    if not receiver_id or not content:
+        return restful.params_error(message="Missing receiver_id or content.")
+
+    try:
+        sender_id = session.get(Config.FRONT_USER_ID)
+        
+        # ✅ 不要转成 int，直接作为字符串传入
+        message = Message(
+            sender_id=sender_id,
+            receiver_id=receiver_id,
+            content=content
+        )
+
+        db.session.add(message)
+        db.session.commit()
+        print(f"✅ Message saved: {sender_id} -> {receiver_id}: {content}")
+        return restful.success()
+
+    except Exception as e:
+        print("❌ Exception in send_message:", e)
+        return restful.server_error(message="Internal error when saving message.")
 
 
 class SignupView(views.MethodView):
