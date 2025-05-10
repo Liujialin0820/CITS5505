@@ -27,7 +27,11 @@ function loadMessages() {
     data.messages.forEach(function (msg) {
       const sender = msg.sender || "Unknown";
       const content = msg.content || "";
-      box.append(`<p><strong>${sender}:</strong> ${content}</p>`);
+      const msgClass = (sender === $("#current-user").data("user-name")) ? 'sent' : 'received';
+      const bubble = `<div class="chat-message ${msgClass}">
+                        <strong>${sender}:</strong><br>${content}
+                      </div>`;
+      box.append(bubble);
     });
 
     box.scrollTop(box[0].scrollHeight);
