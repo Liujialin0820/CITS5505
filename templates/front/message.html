@@ -28,8 +28,10 @@ Messages
 
   <form id="message-form" class="chat-form">
     <input id="message-input" type="text" placeholder="Type a message..." autocomplete="off" />
+    <button type="button" id="share-timetable-btn">📤 Share Timetable</button>
     <button type="submit">Send</button>
   </form>
+
 
   <div id="current-user" data-user-id="{{ current_user_id }}" style="display: none;"></div>
   <meta name="csrf-token" content="{{ csrf_token() }}">

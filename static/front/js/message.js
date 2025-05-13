@@ -83,6 +83,8 @@ $(function () {
     openUserSelector();
   });
 
+  
+
   $("#message-form").submit(function (e) {
     e.preventDefault();
 
@@ -107,6 +109,28 @@ $(function () {
       },
       error: function (xhr, status, error) {
         console.error("❌ Failed to send message:", xhr.responseText);
+      }
+    });
+  });
+
+  $("#share-timetable-btn").click(function () {
+    if (!chatTargetId || currentUserId === null) return;
+
+    const timetableLink = `http://127.0.0.1:5000/timetable/${currentUserId}`;
+    $.ajax({
+      url: "/api/send_message",
+      type: "POST",
+      data: JSON.stringify({
+        receiver_id: chatTargetId,
+        content: `Here is my timetable: ${timetableLink}`
+      }),
+      contentType: "application/json",
+      success: function () {
+        console.log("✅ Timetable shared.");
+        loadMessages();
+      },
+      error: function (xhr) {
+        console.error("❌ Failed to share timetable:", xhr.responseText);
       }
     });
   });
