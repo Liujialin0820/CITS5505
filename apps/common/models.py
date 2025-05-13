@@ -1,7 +1,6 @@
 from exts import db
 
 
-from exts import db
 
 
 class CourseModel(db.Model):
@@ -13,6 +12,25 @@ class CourseModel(db.Model):
     timeslots = db.relationship(
         "WeeklyTimeSlot", back_populates="course", cascade="all, delete-orphan"
     )
+    
+    @staticmethod
+    def get_all_courses_with_times():
+        courses = CourseModel.query.all()
+        result = []
+        for course in courses:
+            course_data = {
+                "course_id": course.id,
+                "course_name": course.name,
+                "timeslots": []
+            }
+            for ts in course.timeslots:
+                course_data["timeslots"].append({
+                    "day_of_week": ts.day_of_week,
+                    "start_hour": ts.start_hour,
+                    "duration_hours": ts.duration_hours
+                })
+            result.append(course_data)
+        return result
 
     def add_weekly_timeslot(
         self, day_of_week: int, start_hour: int, duration_hours: int

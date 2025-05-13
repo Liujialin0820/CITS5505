@@ -10,6 +10,7 @@ from sqlalchemy import or_
 from .forms import PreferenceForm
 from .models import PreferenceModel
 from apps.front.models import Message  # 确保你有这个模型
+from ..common.models import CourseModel  
 
 bp = Blueprint("front", __name__)
 
@@ -172,7 +173,8 @@ class SigninView(views.MethodView):
 
 class TimetableView(views.MethodView):
     def get(self):
-        return render_template("front/time_table.html")
+        course_data = CourseModel.get_all_courses_with_times()
+        return render_template("front/time_table.html", courses=course_data)
 
 
 class PreferenceView(views.MethodView):

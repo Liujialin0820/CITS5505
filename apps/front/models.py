@@ -76,6 +76,7 @@ class Message(db.Model):
     sender = db.relationship("FrontUser", foreign_keys=[sender_id], backref="sent_messages")
     receiver = db.relationship("FrontUser", foreign_keys=[receiver_id], backref="received_messages")
 
+
 class PreferenceModel(db.Model):
     __tablename__ = "course_model"
     id = db.Column(db.Integer, primary_key=True)
