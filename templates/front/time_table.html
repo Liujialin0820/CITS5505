@@ -9,13 +9,17 @@
     rel="stylesheet"
     href="{{ url_for('static', filename='front/css/timetable.css') }}"
     />
+    <script src="{{ url_for('static', filename='front/js/timetable.js') }}"></script>
 {% endblock %}
 
 {% block main_content %}
+    <script>
+        window.coursesData = {{ courses | tojson }};
+    </script>
 
-    <h1>课程时间表</h1> 
+    <!-- <h1>课程时间表</h1> 
     {% for course in courses %}
-        <h2>{{ course.course_name }}</h2>
+        <h2>{{ course.course_name }}</h2> 
         <ul>
             {% for ts in course.timeslots %}
                 <li>
@@ -23,7 +27,7 @@
                 </li>
             {% endfor %}
         </ul>
-    {% endfor %}
+    {% endfor %} -->
 
 <div class="scrollable-content">
     <div class="content-wrapper">
@@ -74,37 +78,8 @@
         <!-- Upcoming Events -->
         <div class="events-panel">
             <h3>Upcoming events</h3>
-            <div class="event">
-                <time>28 Apr Mon<br />12:00 am - 01:00 am</time>
-                <div class="event-title">CITS3301 - Lecture-01</div>
-            </div>
-            <div class="event">
-                <time>28 Apr Mon<br />06:00 pm - 08:00 pm</time>
-                <div class="event-title">PHIL4100 - Wshp-01</div>
-            </div>
-            <div class="event">
-                <time>28 Apr Mon<br />07:00 pm - 09:00 pm</time>
-                <div class="event-title">CITS5508 - LecTut-01</div>
-            </div>
-            <div class="event">
-                <time>28 Apr Mon<br />08:00 pm - 10:00 pm</time>
-                <div class="event-title">CITS3301 - Workshop-01</div>
-            </div>
-            <div class="event">
-                <time>30 Apr Wed<br />01:00 am - 03:00 am</time>
-                <div class="event-title">CITS5505 - Lecture-01</div>
-            </div>
-            <div class="event">
-                <time>1 May Thu<br />06:00 pm - 08:00 pm</time>
-                <div class="event-title">CITS5505 - LecTut-01</div>
-            </div>
-            <div class="event">
-                <time>5 May Mon<br />12:00 am - 01:00 am</time>
-                <div class="event-title">CITS3301 - Lecture-01</div>
-            </div>
-            <div class="event">
-                <time>5 May Mon<br />06:00 pm - 08:00 pm</time>
-                <div class="event-title">PHIL4100 - Wshp-01</div>
+            <div id="event">
+                <!-- JS will fill this -->
             </div>
             <a href="#" class="bottom-link">View All →</a>
         </div>
