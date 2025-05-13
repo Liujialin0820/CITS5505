@@ -4,6 +4,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import enum
 from datetime import datetime
 
+user_course_table = db.Table(
+    "user_course",
+    db.Column("user_id", db.Integer, db.ForeignKey("front_user.id")),
+    db.Column("course_id", db.Integer, db.ForeignKey("course_model.id"))
+)
 
 class GenderEnum(enum.Enum):
     MALE = 1
@@ -23,6 +28,11 @@ class FrontUser(db.Model):
     signature = db.Column(db.String(100))
     gender = db.Column(db.Enum(GenderEnum), default=GenderEnum.UNKNOW)
     join_time = db.Column(db.DateTime, default=datetime.now)
+    courses = db.relationship(
+        "PreferenceModel",  # ← apps.common.models
+        secondary=user_course_table,
+        backref="students"
+    )
 
     def __init__(self, *args, **kwargs):
         if "password" in kwargs:
@@ -65,3 +75,9 @@ class Message(db.Model):
 
     sender = db.relationship("FrontUser", foreign_keys=[sender_id], backref="sent_messages")
     receiver = db.relationship("FrontUser", foreign_keys=[receiver_id], backref="received_messages")
+
+class PreferenceModel(db.Model):
+    __tablename__ = "course_model"
+    id = db.Column(db.Integer, primary_key=True)
+    code = db.Column(db.String(100), unique=True, nullable=False)
+    name = db.Column(db.String(100), nullable=False)

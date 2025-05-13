@@ -1,44 +1,84 @@
 {% extends 'front/front_base.html' %}
 
 {% block title %}
-    preference - Class Management System
+    Course Preferences - Class Management System
 {% endblock %}
 
 {% block head %}
     <link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='front/css/preference.css') }}"
+        rel="stylesheet"
+        href="{{ url_for('static', filename='front/css/preference.css') }}"
     />
+    <style>
+        .preference-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        .preference-container h2 {
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .form-control[multiple] {
+            min-height: 120px;
+            width: 100%;
+        }
+
+        .form-control[type="text"] {
+            width: 100%;
+        }
+
+        .selected-badges {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .selected-badges .badge {
+            margin: 2px;
+        }
+    </style>
 {% endblock %}
 
 {% block main_content %}
-<<<<<<< HEAD
-preference 
-this page is used for Student to choose course
-=======
+<div class="preference-container">
+    <h2>Select or Add Your Courses</h2>
 
-<h2>Select or Add Your Courses</h2>
+    <form method="POST" action="{{ url_for('front.preference') }}">
 
-<!-- 选择已有课程 -->
-<form method="POST" action="{{ url_for('front.preference') }}">
-    <div class="form-group">
-        <label for="courses">Choose from existing courses:</label>
-        <select multiple name="courses" class="form-control">
-            <option value="CITS5505">CITS5505 - Data Analytics</option>
-            <option value="CITS5508">CITS5508 - Big Data</option>
-            <option value="CITS3403">CITS3403 - Web Development</option>
-            <option value="PHIL4100">PHIL4100 - Philosophy</option>
-        </select>
-    </div>
+        <div class="form-group">
+            {{ form.new_course.label }}
+            {{ form.new_course(class="form-control", multiple=True) }}
+            <small class="form-text text-muted">Hold Ctrl (Windows) or Command (Mac) to select multiple.</small>
+        </div>
 
-    <!-- 手动新增课程 -->
-    <div class="form-group mt-4">
-        <label for="new_course">Add a new course:</label>
-        <input type="text" name="new_course" placeholder="Course Name" class="form-control">
-    </div>
+<div class="form-group">
+    <label for="new_course">Add a new course:</label>
+    <select name="new_course" class="form-control">
+        <option value="">-- Select a course to add --</option>
+        {% for course in all_courses %}
+            <option value="{{ course.id }}">{{ course.name }}</option>
+        {% endfor %}
+    </select>
+</div>
 
-    <button type="submit" class="btn btn-primary mt-3">Submit</button>
-</form>
+        <button type="submit" class="btn btn-primary btn-block mt-3">Submit Preferences</button>
+        <button type="submit" class="btn btn-danger btn-block mt-2" name="action" value="clear">Clear Preferences</button>
+    </form>
 
->>>>>>> 24088207_Thant
+</div>
 {% endblock %}
