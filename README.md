@@ -74,26 +74,7 @@ pip install -r requirements.txt
 flask run
 
 
-## How to Run the Tests
-This project includes a suite of automated tests to ensure key functionalities—such as user login, course preference handling, and admin features—work as expected.
 
-To run the tests:
-
-1. Activate your virtual environment:
-```bash
-source venv/bin/activate  # or venv\Scripts\activate on Windows
-
-    Run all test cases located in the tests/ directory:
-
-python -m unittest discover -s tests
-
-    If your project uses pytest, you can also run:
-
-pytest
-
-Make sure all dependencies are installed before running tests:
-
-pip install -r requirements.txt
 
 
 
