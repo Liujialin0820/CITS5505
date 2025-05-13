@@ -1,8 +1,6 @@
 from exts import db
 
 
-
-
 class CourseModel(db.Model):
     __tablename__ = "course"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -31,7 +29,7 @@ class CourseModel(db.Model):
                 })
             result.append(course_data)
         return result
-
+    
     def add_weekly_timeslot(
         self, day_of_week: int, start_hour: int, duration_hours: int
     ):
