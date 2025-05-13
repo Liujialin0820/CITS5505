@@ -18,7 +18,7 @@ function loadCourses() {
         // 使用 course.timeslot 而不是 timeslots 数组
         const slot = course.timeslot;
         if (slot) {
-          const timeStr = `${days[slot.day_of_week]} ${slot.start_hour}:00 (${slot.duration_hours}h)`;
+          const timeStr = `${days[slot.day_of_week-1]} ${slot.start_hour}:00 (${slot.duration_hours}h)`;
           label += ` - [${timeStr}]`;
         } else {
           label += " - ⚠️ Please select a timeslot";
@@ -59,7 +59,7 @@ function renderTimeslotPanel(courseId) {
       let html = `<form id="timeslot-form"><ul class="list-group">`;
       res.timeslots.forEach(function (slot) {
         const days = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-        const label = `${days[slot.day_of_week]} ${slot.start_hour}:00 (${slot.duration_hours}h)`;
+        const label = `${days[slot.day_of_week-1]} ${slot.start_hour}:00 (${slot.duration_hours}h)`;
         html += `
           <li class="list-group-item">
             <label>
