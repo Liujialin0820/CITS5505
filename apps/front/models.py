@@ -77,13 +77,13 @@ class Enrollment(db.Model):
             # 如果 enrollment.timeslot_id 为空，则 timeslot 为 None
             ts = en.timeslot
             if ts:
-                timeslot_info = {
+                timeslot_info = [{
                     "day_of_week": ts.day_of_week,
                     "start_hour": ts.start_hour,
                     "duration_hours": ts.duration_hours,
                     # 可选：给前端直接好用的字符串
                     "label": f"{days[ts.day_of_week]} {ts.start_hour}:00 ({ts.duration_hours}h)"
-                }
+                }]
             else:
                 timeslot_info = None
 
