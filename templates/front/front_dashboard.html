@@ -12,18 +12,20 @@
 {% endblock %}
 
 {% block main_content %}
-<div class="header">Saturday, April 26, 2025</div>
 
-      <div class="info-box"> <b>
-        During the preference entry period, please enter your preferences, refer
-        to the <a href="#">Student FAQs</a> for guidance on how to enter
-        preferences. If you have units not appearing in CAS, please see
-        <a href="#">My unit is not in CAS</a>.<br /><br />
-        During the review and adjust period, ensure you are allocated to classes
-        for all your units. Refer to <a href="#">Student FAQs</a> for help
-        adjusting allocations.<br /><br />
-        Need assistance with CAS? Submit a <a href="#">CAS Help Request</a>.
-      </div> </b>
+<div class="header">{{ today.strftime('%A, %B %d, %Y') }}</div>
+ 
+<div class="info-box">
+  <p><b>Timetable</b><br>
+  During the semester, you can view your allocated class times and check for any timetable changes. Use this section to stay informed about when and where your classes take place.</p>
+ 
+  <p><b>Preference</b><br>
+  During the preference entry period, use this section to submit your course preferences. If any courses are missing or unavailable, please refer to the Student FAQs or contact support.</p>
+ 
+  <p><b>Message</b><br>
+  You can use the messaging feature to communicate with classmates or instructors. Stay connected and up to date by checking this section regularly.</p>
+
+</div>
 
       <div class="section-title">Action Required</div>
       <p>No actions required</p>

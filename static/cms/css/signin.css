@@ -9,7 +9,14 @@ body {
   background-color: #f0f2f5;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-
+.logo-box {
+  text-align: center;
+  padding-top: 40px;
+}
+.logo-box img {
+  width: 60px;
+  height: 60px;
+}
 /* Container card */
 .form-signin {
   background: #ffffff;

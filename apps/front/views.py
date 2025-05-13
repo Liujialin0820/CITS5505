@@ -9,7 +9,7 @@ from flask import (
     g,
     jsonify,
 )
-from .forms import SignupForm, SigninForm, PreferenceForm
+from .forms import SignupForm, SigninForm
 from utils import restful
 from .models import FrontUser
 from exts import db
@@ -17,8 +17,7 @@ from config import Config
 from apps.common.models import CourseModel
 from .decorators import login_required
 from sqlalchemy import or_
-from .forms import PreferenceForm
-from .models import PreferenceModel,Enrollment
+from .models import Enrollment
 from apps.front.models import Message  # 确保你有这个模型
 from ..common.models import CourseModel, WeeklyTimeSlot
 from datetime import datetime
@@ -39,9 +38,7 @@ def load_user():
 @login_required
 def index():
     courses = CourseModel.query.all()
-    context = {
-        "courses": courses,
-    }
+    context = {"courses": courses, "today": datetime.today()}
     return render_template("front/front_dashboard.html", **context)
 
 
@@ -194,37 +191,39 @@ class SigninView(views.MethodView):
 
 
 class TimetableView(views.MethodView):
-    def get(self):
-        user_id = session.get(Config.FRONT_USER_ID)
+    def get(self, uid=None):
+        # 优先从URL参数中获取uid，否则从session获取
+        user_id = uid or session.get(Config.FRONT_USER_ID)
+        if not user_id:
+            return "用户未登录或未提供UID", 400
+
         course_data = Enrollment.get_user_enrollments_with_times(user_id)
-        print(course_data)
         return render_template("front/time_table.html", courses=course_data)
 
-
-@bp.route('/add_enrollment/', methods=['POST'])
+@bp.route("/add_enrollment/", methods=["POST"])
 @login_required
 def add_enrollment():
-    course_id = request.form.get('new_course')
+    course_id = request.form.get("new_course")
     user_id = session.get(Config.FRONT_USER_ID)
 
     if not user_id:
-        return jsonify({'code': 401, 'message': '用户未登录'}), 401
+        return jsonify({"code": 401, "message": "用户未登录"}), 401
     if not course_id:
-        return jsonify({'code': 400, 'message': '请选择一个课程'}), 400
+        return jsonify({"code": 400, "message": "请选择一个课程"}), 400
 
     course = CourseModel.query.get(course_id)
     if not course:
-        return jsonify({'code': 404, 'message': '课程不存在'}), 404
+        return jsonify({"code": 404, "message": "课程不存在"}), 404
 
     # 可选：检查是否已选该课程，防止重复选课
     exists = Enrollment.query.filter_by(user_id=user_id, course_id=course.id).first()
     if exists:
-        return jsonify({'code': 409, 'message': '您已选择该课程'}), 409
+        return jsonify({"code": 409, "message": "您已选择该课程"}), 409
 
     # 不绑定 timeslot
     enrollment = Enrollment(
         user_id=user_id,
-        course_id=course.id
+        course_id=course.id,
         # timeslot_id=None，省略
     )
     db.session.add(enrollment)
@@ -233,41 +232,45 @@ def add_enrollment():
         db.session.commit()
     except Exception as e:
         db.session.rollback()
-        return jsonify({'code': 500, 'message': f'数据库错误：{e}'}), 500
+        return jsonify({"code": 500, "message": f"数据库错误：{e}"}), 500
 
-    return jsonify({'code': 200, 'message': '选课成功'}), 200
+    return jsonify({"code": 200, "message": "选课成功"}), 200
 
-@bp.route('/remove_enrollment/', methods=['POST'])
+
+@bp.route("/remove_enrollment/", methods=["POST"])
 @login_required
 def remove_enrollment():
     data = request.get_json()
-    course_ids = data.get('course_ids')
+    course_ids = data.get("course_ids")
     user_id = session.get(Config.FRONT_USER_ID)
 
     if not user_id:
-        return jsonify({'code': 401, 'message': 'User not logged in'}), 401
+        return jsonify({"code": 401, "message": "User not logged in"}), 401
     if not course_ids:
-        return jsonify({'code': 400, 'message': 'No course IDs provided'}), 400
+        return jsonify({"code": 400, "message": "No course IDs provided"}), 400
 
     try:
         # 删除对应课程的 Enrollment 记录
         Enrollment.query.filter(
-            Enrollment.user_id == user_id,
-            Enrollment.course_id.in_(course_ids)
+            Enrollment.user_id == user_id, Enrollment.course_id.in_(course_ids)
         ).delete(synchronize_session=False)
 
         db.session.commit()
-        return jsonify({'code': 200, 'message': 'Enrollment(s) removed successfully'}), 200
+        return (
+            jsonify({"code": 200, "message": "Enrollment(s) removed successfully"}),
+            200,
+        )
     except Exception as e:
         db.session.rollback()
-        return jsonify({'code': 500, 'message': f'Database error: {e}'}), 500
-    
-@bp.route('/my_courses/', methods=['GET'])
+        return jsonify({"code": 500, "message": f"Database error: {e}"}), 500
+
+
+@bp.route("/my_courses/", methods=["GET"])
 @login_required
 def view_my_courses():
     user_id = session.get(Config.FRONT_USER_ID)
     if not user_id:
-        return jsonify({'code': 401, 'message': 'User not logged in'}), 401
+        return jsonify({"code": 401, "message": "User not logged in"}), 401
 
     enrollments = Enrollment.query.filter_by(user_id=user_id).all()
     course_list = []
@@ -281,21 +284,24 @@ def view_my_courses():
         ts = enrollment.timeslot
         if ts:
             timeslot_info = {
-                'day_of_week': ts.day_of_week,        # 0=Monday
-                'start_hour': ts.start_hour,          # e.g., 10 for 10am
-                'duration_hours': ts.duration_hours   # e.g., 2 hours
+                "day_of_week": ts.day_of_week,  # 0=Monday
+                "start_hour": ts.start_hour,  # e.g., 10 for 10am
+                "duration_hours": ts.duration_hours,  # e.g., 2 hours
             }
         else:
             timeslot_info = None
 
-        course_list.append({
-            'course_id': course.id,
-            'course_name': course.name,
-            'timeslot': timeslot_info
-        })
+        course_list.append(
+            {
+                "course_id": course.id,
+                "course_name": course.name,
+                "timeslot": timeslot_info,
+            }
+        )
 
     # 如果前端 loadCourses() 按照 “纯数组” 来处理，就直接返回列表
     return jsonify(course_list), 200
+
 
 # 获取课程时间段
 @bp.route("/course_timeslots/<int:course_id>/")
@@ -315,6 +321,7 @@ def course_timeslots(course_id):
         for ts in course.timeslots
     ]
     return jsonify({"code": 200, "timeslots": timeslots})
+
 
 # 修改已选课程的时间段
 @bp.route("/update_timeslot/", methods=["POST"])
@@ -349,4 +356,5 @@ class PreferenceView(views.MethodView):
 bp.add_url_rule("/signup/", view_func=SignupView.as_view("signup"))
 bp.add_url_rule("/signin/", view_func=SigninView.as_view("signin"))
 bp.add_url_rule("/timetable/", view_func=TimetableView.as_view("timetable"))
+bp.add_url_rule("/timetable/<uid>", view_func=TimetableView.as_view("timetable_with_uid"))
 bp.add_url_rule("/preference/", view_func=PreferenceView.as_view("preference"))
