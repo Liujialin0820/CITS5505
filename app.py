@@ -2,7 +2,6 @@ from flask import Flask, render_template
 from apps.cms import bp as cms_bp
 from apps.front import bp as front_bp
 from apps.common import bp as common_bp
-from apps.front.views import bp as front_bp
 from config import Config
 from exts import db, migrate
 from flask_wtf import CSRFProtect
