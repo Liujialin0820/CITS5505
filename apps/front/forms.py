@@ -1,10 +1,10 @@
 # encoding: utf-8
 
 from ..common.forms import BaseForm
-from wtforms.validators import Regexp, EqualTo, Email, InputRequired
+from wtforms.validators import Regexp, EqualTo, Email, InputRequired, DataRequired, Optional
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField
-from wtforms.validators import DataRequired
+from wtforms import StringField, IntegerField, SelectMultipleField, SelectField
+from .decorators import login_required
 
 
 class SignupForm(BaseForm):
@@ -53,3 +53,7 @@ class SigninForm(BaseForm):
 class EnrollmentForm(FlaskForm):
     user_id = StringField(validators=[DataRequired()])
     timeslot_id = IntegerField(validators=[DataRequired()])
+
+class PreferenceForm(FlaskForm):
+    courses = SelectMultipleField(coerce=int, validators=[Optional()])
+    new_course = SelectField(coerce=str, validators=[Optional()])

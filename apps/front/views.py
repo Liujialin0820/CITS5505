@@ -1,5 +1,5 @@
-from flask import Blueprint, views, render_template, request, session, redirect, url_for
-from .forms import SignupForm, SigninForm
+from flask import Blueprint, views, render_template, request, session, redirect, url_for, g
+from .forms import SignupForm, SigninForm, PreferenceForm
 from utils import restful
 from .models import FrontUser
 from exts import db
@@ -7,10 +7,19 @@ from config import Config
 from apps.common.models import CourseModel
 from .decorators import login_required
 from sqlalchemy import or_
+from .forms import PreferenceForm
+from .models import PreferenceModel
 from apps.front.models import Message  # 确保你有这个模型
 
 bp = Blueprint("front", __name__)
 
+@bp.before_app_request
+def load_user():
+    user_id = session.get(Config.FRONT_USER_ID)
+    if user_id:
+        g.user = FrontUser.query.get(user_id)
+    else:
+        g.user = None
 
 @bp.route("/")
 @login_required
@@ -167,8 +176,93 @@ class TimetableView(views.MethodView):
 
 
 class PreferenceView(views.MethodView):
+    decorators = [login_required]
+
     def get(self):
-        return render_template("front/preference.html")
+        form = PreferenceForm()
+        all_courses = CourseModel.query.all()
+        form.new_course.choices = [(str(c.id), c.name) for c in all_courses]
+
+        user = g.user
+
+        selected_ids = []
+        if request.args.get("updated") == "1":
+            selected_ids = [c.id for c in user.courses]
+
+        form.courses.data = selected_ids 
+
+        form.courses.choices = [
+            (c.id, f"{c.code} - {c.name}") for c in PreferenceModel.query.all()
+        ]
+
+        return render_template(
+            "front/preference.html",
+            form=form,
+            selected_ids=selected_ids,
+            user_courses=user.courses if selected_ids else [],
+            all_courses=all_courses,
+            courses=PreferenceModel.query.all()
+        )
+
+    def post(self):
+        form = PreferenceForm()
+
+        # Load course options
+        all_courses = CourseModel.query.all()
+        form.new_course.choices = [(str(c.id), c.name) for c in all_courses]
+        form.courses.choices = [
+            (c.id, f"{c.code} - {c.name}") for c in PreferenceModel.query.all()
+        ]
+
+        user = g.user
+        action = request.form.get("action")
+
+        if action == "clear":
+            print("clear1")
+            selected_course_id = form.new_course.data
+            if selected_course_id:
+                print("clear2")
+                base_course = CourseModel.query.get(int(selected_course_id))
+                if base_course:
+                    print("clear3")
+                    pref = PreferenceModel.query.filter_by(name=base_course.name).first()
+                    print(f"user.courses IDs = {user.courses}")
+                    print(f"pref found: {pref.name} (id={pref.id})")
+                    if pref and any(p.id == pref.id for p in user.courses):
+                        print("clear4")
+                        user.courses.remove(pref)  
+                        db.session.commit()
+
+                        #db.session.delete(pref)
+                        #db.session.commit()
+            return redirect(url_for("front.preference", updated=1))
+
+        # Default: Submit preferences
+        if form.validate_on_submit():
+            selected_ids = form.courses.data
+            selected_course_id = form.new_course.data
+
+            if selected_course_id:
+                base_course = CourseModel.query.get(int(selected_course_id))
+                if base_course:
+                    pref = PreferenceModel.query.filter_by(name=base_course.name).first()
+                    if not pref:
+                        pref = PreferenceModel(
+                            code=f"AUTO-{base_course.name[:10]}",
+                            name=base_course.name,
+                        )
+                        db.session.add(pref)
+                        db.session.commit()
+                    selected_ids.append(pref.id)
+                    user.courses.append(pref)
+
+            user.courses = PreferenceModel.query.filter(
+                PreferenceModel.id.in_(selected_ids)
+            ).all()
+            db.session.commit()
+            return redirect(url_for("front.preference", updated=1))
+
+        return "Form validation failed", 400
 
 
 bp.add_url_rule("/signup/", view_func=SignupView.as_view("signup"))
