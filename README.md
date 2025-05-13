@@ -1,13 +1,18 @@
 # CITS5505 Group Project
 
 ## Project Title: Course Scheduler Tool
-This is a web-based class management and scheduling system built with Flask. It allows university students to:
-- Select course preferences,
-- View automatically generated timetables based on those selections,
-- Share their personalised schedules with peers,
-- While admins can manage courses and class time slots from a dedicated CMS.
+This is a web-based class management and scheduling tool built with Flask.
 
-The platform aims to streamline course scheduling and class sharing, ensuring ease of use, visual clarity, and functional flexibility.
+It allows university students to:
+
+- Select and manage course preferences
+- View automatically generated timetables
+- Share personalised schedules with peers
+
+Admins can manage courses and class time slots via a dedicated CMS.
+
+The platform is designed for ease of use, visual clarity, and scheduling flexibility.
+
 
 ## 🚀 Features Overview
 
@@ -45,20 +50,51 @@ The platform aims to streamline course scheduling and class sharing, ensuring ea
 
 |  UWA ID    |      Name       |------GitHub Username------|
 |------------|-----------------|---------------------------|
-|  24088207  |  Thant Sin Oo   |------GitHub Username------|
-|  24143148  |  Hongsui Zhu    |------GitHub Username------|
-|  24236328  |  Jialin Liu     |------GitHub Username------|
-|  24322263  |  Jinho Jang     |------GitHub Username------|
+|  24088207  |  Thant Sin Oo   |Thant-Sin-Oo|
+|  24143148  |  Hongsui Zhu    |HongsuiZhu-11|
+|  24236328  |  Jialin Liu     |Liujialin0820|
+|  24322263  |  Jinho Jang     |Smithton7330|
 
 
 ## How to Launch the Application
 
+```bash
+# Clone the repository
+git clone https://github.com/your-repo-url.git
+cd your-repo-folder
 
+# Create and activate virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
+# Install dependencies
+pip install -r requirements.txt
 
+# Run the Flask app
+flask run
 
 
 ## How to Run the Tests
+This project includes a suite of automated tests to ensure key functionalities—such as user login, course preference handling, and admin features—work as expected.
+
+To run the tests:
+
+1. Activate your virtual environment:
+```bash
+source venv/bin/activate  # or venv\Scripts\activate on Windows
+
+    Run all test cases located in the tests/ directory:
+
+python -m unittest discover -s tests
+
+    If your project uses pytest, you can also run:
+
+pytest
+
+Make sure all dependencies are installed before running tests:
+
+pip install -r requirements.txt
+
 
 
 
