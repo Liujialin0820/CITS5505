@@ -4,12 +4,13 @@ body {
 
 .main-wrapper {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;   
   align-items: flex-start;
-  gap: 40px;
-  padding: 0px 20px;
-  padding-top: 10px;
+  gap: 40px;                     
+  padding: 10px 0;               
   flex-wrap: wrap;
+  width: 100vw;
+  box-sizing: border-box;
 }
 
 .card-box {
@@ -18,7 +19,10 @@ body {
   border-radius: 15px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   flex-grow: 1;
-
+  flex-basis: 0;           
+  margin: 0;
+  width: 100%;               
+  
 }
 
 .card-box h3 {
