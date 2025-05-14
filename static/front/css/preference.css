@@ -63,7 +63,7 @@ body {
 }
 
 select.form-control {
-  height: 48px; /* 或者你想要的高度，比如 50px、56px */
+  height: 48px; /* Alternatively, set it to your preferred height, e.g., 50px or 56px */
   line-height: 1.5;
 }
 

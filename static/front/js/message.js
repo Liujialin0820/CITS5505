@@ -1,7 +1,7 @@
 let chatTargetId = null;
 let currentUserId = null;
 
-// ✅ 设置全局 AJAX 的 CSRF Token 请求头
+// ✅ Configure a global CSRF token header for AJAX requests
 $.ajaxSetup({
   beforeSend: function (xhr, settings) {
     const token = $('meta[name="csrf-token"]').attr('content');

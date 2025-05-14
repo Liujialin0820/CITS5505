@@ -9,11 +9,11 @@ Management System {% endblock %} {% block head %}
 {% block main_content %}
 <div class="main-wrapper">
   <div class="row" style="display: flex; gap: 20px">
-    <!-- 左侧卡片：新增课程 + 已选课程 -->
+    <!-- Left card: Add new course + Selected courses -->
     <div class="card-box" style="flex: 2.5; min-width: 900px;">
       <h3>Manage Your Courses</h3>
 
-      <!-- 新增课程 -->
+      <!-- Add new course -->
       <form method="POST">
         <div class="form-group">
           <label for="add-course">Choose a Course to Add:</label>
@@ -31,7 +31,7 @@ Management System {% endblock %} {% block head %}
 
       <hr />
 
-      <!-- 已选课程 -->
+      <!-- Selected courses -->
       <form method="POST">
         <div class="form-group">
           <label for="existing-courses">Currently Selected Courses:</label>
@@ -59,7 +59,7 @@ Management System {% endblock %} {% block head %}
       </form>
     </div>
 
-    <!-- 右侧卡片：展示和修改时间段 -->
+    <!-- Right card: Display and modify timeslots -->
     <div class="card-box" style="flex: 1;">
       <h3>Course Time Selection</h3>
       <div id="timeslot-panel">
