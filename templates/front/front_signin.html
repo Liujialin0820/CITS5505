@@ -1,85 +1,38 @@
-{% from 'common/_macros.html' import static %}
+{% extends 'front/front_signbase.html' %}
+{% from "common/_macros.html" import static %}
 
-<!DOCTYPE html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+{% block title %}
+    Class Management System
+{% endblock %}
 
-    <title>Login - Class Management System</title>
+{% block head %}
+    <script src="{{ static("front/js/front_signin.js") }}"></script>
+{% endblock %}
 
-    <!-- Bootstrap core CSS -->
-    <link
-      href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
+{% block h2_block %}
+    <p>Please Login</p>
+{% endblock %}
 
-    <!-- Custom styles for this template -->
-    <link
-      href="{{ url_for('static',filename='cms/css/signin.css') }}"
-      rel="stylesheet"
-    />
-
-    <!-- Front-end specific JS -->
-    <script src="{{ static('front/js/front_signin.js') }}"></script>
-  </head>
-
-  <body>
-    <div class="container">
-      <form class="form-signin" method="post">
-        <div class="logo-box">
-          <a href="/">
-            <img src="{{ static('common/images/logo.png') }}" alt="">
-          </a>
-        </div>
-
-        <h2 class="form-signin-heading">Please Login</h2>
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" >
-
-        <label for="inputEmail" class="sr-only">Email:</label>
-        <input
-          type="email"
-          id="inputEmail"
-          class="form-control"
-          placeholder="Enter Student Email"
-          name="email"
-          required
-          autofocus
-        />
-
-        <label for="inputPassword" class="sr-only">Password:</label>
-        <input
-          type="password"
-          id="inputPassword"
-          class="form-control"
-          placeholder="Enter Password"
-          name="password"
-          required
-        />
-
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="1" name="remember" checked />
-            Remember Me
-          </label>
-        </div>
-
-        <button class="btn btn-lg btn-warning btn-block" id="submit-btn" type="submit">
-          Login
-        </button>
-      </form>
-
-      <p style="text-align: center; margin-top: 10px">
-        Don’t have an account?
-        <a href="{{ url_for('front.signup') }}">Register now</a>
-      </p>
-
-      {% if message %}
-      <p style="text-align: center" class="text-danger">{{ message }}</p>
-      {% endif %}
+{% block signbox %}
+    <div class="form-group">
+        <input type="text" class="form-control" name="email" placeholder="Enter Student Email">
     </div>
-  </body>
-</html>
+
+    <div class="form-group">
+        <input type="password" class="form-control" name="password" placeholder="Enter Password">
+    </div>
+
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" name="remember" value="1" checked>Remember Me 
+        </label>
+    </div>
+    
+    <div class="form-group">
+        <button class="btn btn-warning btn-block" id="submit-btn">Login</button>
+    </div>
+
+    <div class="form-group">
+        <a href="{{ url_for("front.signup") }}" class="signup-link">Register</a>
+    </div>
+{% endblock %}
