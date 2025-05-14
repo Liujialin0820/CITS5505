@@ -6,7 +6,6 @@
   background-color: #2f3136;
   color: white;
   font-family: 'Segoe UI', sans-serif;
-
   display: flex;
   flex-direction: column;
 }
@@ -31,7 +30,6 @@
   overflow-y: auto;
   margin: 15px 0;
 }
-
 
 .chat-message {
   padding: 8px 12px;
@@ -63,8 +61,27 @@
   flex: 1;
   padding: 10px;
   border-radius: 5px;
-  border: none;
+  border: 1px solid transparent;
   outline: none;
+  background-color: #40444b;
+  color: white;
+  cursor: text;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.chat-form input:focus {
+  border: 1px solid #7289da;
+  background-color: #40444b;
+  cursor: text;
+}
+
+.chat-form input:hover {
+  background-color: #4a4e56;
+  cursor: text;
+}
+
+.chat-form input::placeholder {
+  color: #b9bbbe;
 }
 
 .chat-form button {
@@ -74,6 +91,19 @@
   border-radius: 5px;
   padding: 10px 15px;
   cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.chat-form button:hover {
+  background-color: #4752c4;
+}
+
+#share-timetable-btn {
+  background-color: #43b581;
+}
+
+#share-timetable-btn:hover {
+  background-color: #369e6f;
 }
 
 .user-popup {
@@ -110,20 +140,7 @@
 
 .user-popup li:hover {
   background-color: #5865f2;
-}
-
-
-.chat-form button {
-background-color: #5865f2;
-color: white;
-border: none;
-border-radius: 5px;
-padding: 10px 15px;
-cursor: pointer;
-}
-
-#share-timetable-btn {
-background-color: #43b581;
+  cursor: pointer;
 }
 
 .chat-controls button,
@@ -135,6 +152,7 @@ background-color: #43b581;
   padding: 8px 12px;
   cursor: pointer;
   font-weight: 500;
+  transition: background-color 0.2s;
 }
 
 .user-popup button {
@@ -143,6 +161,8 @@ background-color: #43b581;
   background-color: #4f545c;
 }
 
+.chat-controls button:hover,
 .user-popup button:hover {
-  background-color: #5865f2;
+  background-color: #4752c4;
+  cursor: pointer;
 }
