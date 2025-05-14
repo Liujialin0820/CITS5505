@@ -62,7 +62,7 @@ function openUserSelector() {
       ul.append(li);
     });
 
-    $("#user-selector").show();
+    $("#user-selector").removeClass("hidden").show();
   }).fail(function (xhr) {
     console.error("❌ Failed to fetch /api/users", xhr.responseText);
   });
@@ -84,7 +84,7 @@ $(function () {
   });
 
   $("#close-user-popup").click(function () {
-    $("#user-selector").hide();
+    $("#user-selector").addClass("hidden").hide();
   });
 
 
