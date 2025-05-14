@@ -67,6 +67,11 @@ cd your-repo-folder
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
+# Setup database 
+flask db init
+flask db migrate -m "comment"
+flask db upgrade
+
 # Install dependencies
 pip install -r requirements.txt
 
