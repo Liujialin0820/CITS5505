@@ -83,7 +83,10 @@ $(function () {
     openUserSelector();
   });
 
-  
+  $("#close-user-popup").click(function () {
+    $("#user-selector").hide();
+  });
+
 
   $("#message-form").submit(function (e) {
     e.preventDefault();

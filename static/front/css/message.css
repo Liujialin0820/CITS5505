@@ -125,3 +125,24 @@ cursor: pointer;
 #share-timetable-btn {
 background-color: #43b581;
 }
+
+.chat-controls button,
+.user-popup button {
+  background-color: #5865f2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.user-popup button {
+  margin-top: 12px;
+  width: 100%;
+  background-color: #4f545c;
+}
+
+.user-popup button:hover {
+  background-color: #5865f2;
+}
