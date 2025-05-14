@@ -1,7 +1,7 @@
 let chatTargetId = null;
 let currentUserId = null;
 
-// ✅ 设置全局 AJAX 的 CSRF Token 请求头
+
 $.ajaxSetup({
   beforeSend: function (xhr, settings) {
     const token = $('meta[name="csrf-token"]').attr('content');
@@ -62,7 +62,7 @@ function openUserSelector() {
       ul.append(li);
     });
 
-    $("#user-selector").show();
+    $("#user-selector").removeClass("hidden").show();
   }).fail(function (xhr) {
     console.error("❌ Failed to fetch /api/users", xhr.responseText);
   });
@@ -84,7 +84,7 @@ $(function () {
   });
 
   $("#close-user-popup").click(function () {
-    $("#user-selector").hide();
+    $("#user-selector").addClass("hidden").hide();
   });
 
 
