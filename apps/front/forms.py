@@ -2,9 +2,7 @@
 
 from ..common.forms import BaseForm
 from wtforms.validators import Regexp, EqualTo, Email, InputRequired
-from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField
-from wtforms.validators import DataRequired
+from wtforms import StringField
 
 
 class SignupForm(BaseForm):
@@ -49,7 +47,3 @@ class SigninForm(BaseForm):
     )
     remember = StringField()
 
-
-class EnrollmentForm(FlaskForm):
-    user_id = StringField(validators=[DataRequired()])
-    timeslot_id = IntegerField(validators=[DataRequired()])

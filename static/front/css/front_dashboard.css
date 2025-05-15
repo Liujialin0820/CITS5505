@@ -41,6 +41,18 @@
   border-left: 5px solid #003087;
 }
 
+.event-title {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.event-day,
+.event-time {
+  font-size: 13px;
+  color: #333;
+}
+
+
 .event time {
   display: block;
   font-size: 14px;

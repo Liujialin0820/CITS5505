@@ -39,11 +39,13 @@ class UpdatecourseForm(AddcourseForm):
 
 class AddTimeslotForm(FlaskForm):
     course_id = IntegerField(validators=[DataRequired()])
-    day_of_week = IntegerField(validators=[DataRequired(), NumberRange(1, 7)])
-    hour = IntegerField(validators=[DataRequired(), NumberRange(0, 23)])
+    day_of_week = IntegerField(validators=[DataRequired(), NumberRange(0, 6)])  # 0=Monday, 6=Sunday
+    start_hour = IntegerField(validators=[DataRequired(), NumberRange(0, 23)])
+    duration_hours = IntegerField(validators=[DataRequired(), NumberRange(1, 24)])
 
 
 class UpdateTimeslotForm(FlaskForm):
     timeslot_id = IntegerField(validators=[DataRequired()])
-    day_of_week = IntegerField(validators=[DataRequired(), NumberRange(1, 7)])
-    hour = IntegerField(validators=[DataRequired(), NumberRange(0, 23)])
+    day_of_week = IntegerField(validators=[DataRequired(), NumberRange(0, 6)])
+    start_hour = IntegerField(validators=[DataRequired(), NumberRange(0, 23)])
+    duration_hours = IntegerField(validators=[DataRequired(), NumberRange(1, 24)])

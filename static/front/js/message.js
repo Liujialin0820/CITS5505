@@ -1,6 +1,7 @@
 let chatTargetId = null;
 let currentUserId = null;
 
+
 // Setup global CSRF token for all AJAX requests
 $.ajaxSetup({
   beforeSend: function (xhr, settings) {

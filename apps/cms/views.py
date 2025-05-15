@@ -191,12 +191,15 @@ def add_timeslot():
             return restful.params_error("Course doesn't exist")
         try:
             course.add_weekly_timeslot(
-                day_of_week=form.day_of_week.data, hour=form.hour.data
+                day_of_week=form.day_of_week.data,
+                start_hour=form.start_hour.data,
+                duration_hours=form.duration_hours.data
             )
             return restful.success()
         except ValueError as e:
             return restful.params_error(str(e))
     return restful.params_error(form.get_error())
+
 
 
 @bp.route("/utimeslot/", methods=["POST"])
@@ -208,10 +211,12 @@ def update_timeslot():
         if not slot:
             return restful.params_error("Timeslot not found")
         slot.day_of_week = form.day_of_week.data
-        slot.hour = form.hour.data
+        slot.start_hour = form.start_hour.data
+        slot.duration_hours = form.duration_hours.data
         db.session.commit()
         return restful.success()
     return restful.params_error(form.get_error())
+
 
 
 @bp.route("/dtimeslot/", methods=["POST"])

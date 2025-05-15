@@ -1,21 +1,12 @@
-{% extends 'cms/cms_base.html' %} 
-
-{% from "common/_macros.html" import static %}
-
+{% extends 'cms/cms_base.html' %} {% from "common/_macros.html" import static %}
 {% block title %}Course Management{% endblock %} {% block head %}
 <link
   href="{{ url_for('static', filename='cms/css/course.css') }}"
   rel="stylesheet"
 />
 <script src="{{ static('cms/js/courses.js') }}"></script>
-
-{% endblock %} 
-
-{% block page_title %} 
-{{ self.title() }} 
-{% endblock %} 
-
-{% block main_content %}
+{% endblock %} {% block page_title %} {{ self.title() }} {% endblock %} {% block
+main_content %}
 <div class="top-box">
   <button class="btn btn-warning pull-right" id="add-course-btn">
     Add New course
@@ -39,13 +30,16 @@
         <ul class="list-unstyled">
           {% for slot in course.timeslots %}
           <li>
-            {{ ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][slot.day_of_week-1]
-            }} {{ '%02d:00' % slot.hour }}
+            {{
+            ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][slot.day_of_week-1]
+            }} {{ '%02d:00' % slot.start_hour }} - {{ '%02d:00' %
+            ((slot.start_hour + slot.duration_hours) % 24) }}
             <button
               class="btn btn-link btn-xs edit-timeslot-btn"
               data-id="{{ slot.id }}"
               data-day="{{ slot.day_of_week }}"
-              data-hour="{{ slot.hour }}"
+              data-start-hour="{{ slot.start_hour }}"
+              data-duration="{{ slot.duration_hours }}"
             >
               edit
             </button>
@@ -93,10 +87,26 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Hour</label>
-            <select class="form-control" id="modal-hour" name="hour">
+            <label>Start Hour</label>
+            <select
+              class="form-control"
+              id="modal-start-hour"
+              name="start_hour"
+            >
               {% for h in range(0,24) %}
               <option value="{{h}}">{{'%02d:00' % h}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Duration (hours)</label>
+            <select
+              class="form-control"
+              id="modal-duration"
+              name="duration_hours"
+            >
+              {% for d in range(1, 13) %}
+              <option value="{{d}}">{{d}} hour{{ 's' if d > 1 }}</option>
               {% endfor %}
             </select>
           </div>
