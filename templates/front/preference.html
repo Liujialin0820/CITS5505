@@ -1,0 +1,71 @@
+{% extends 'front/front_base.html' %} {% block title %} Select Courses - Class
+Management System {% endblock %} {% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='front/css/preference.css') }}"
+/>
+<script src="{{ url_for('static',filename='front/js/preference.js') }}"></script>
+{% endblock %} 
+{% block main_content %}
+<div class="main-wrapper">
+  <div class="row" style="display: flex; gap: 20px">
+    <!-- 左侧卡片：新增课程 + 已选课程 -->
+    <div class="card-box" style="flex: 3; min-width: 320px;">
+      <h3>Manage Your Courses</h3>
+
+      <!-- 新增课程 -->
+      <form method="POST">
+        <div class="form-group">
+          <label for="add-course">Choose a Course to Add:</label>
+          <select id="add-course" name="new_course" class="form-control">
+            <option value="">-- Select a course to add --</option>
+            {% for course in courses %}
+            <option value="{{ course.course_id }}">{{ course.course_name }}</option>
+            {% endfor %}
+          </select>
+          <button type="button" class="btn btn-primary" style="margin-top: 10px" id="add_course">
+            Add Course
+          </button>
+        </div>
+      </form>
+
+      <hr />
+
+      <!-- 已选课程 -->
+      <form method="POST">
+        <div class="form-group">
+          <label for="existing-courses">Currently Selected Courses:</label>
+          <select
+            id="existing-courses"
+            name="existing_courses"
+            class="form-control"
+            multiple
+            size="6"
+          >
+            <option disabled>Loading your courses...</option>
+          </select>
+          <div class="note">
+            Hold Ctrl (Windows) or Command (Mac) to select multiple.
+          </div>
+          <button
+            type="button"
+            class="btn btn-danger"
+            style="margin-top: 10px"
+            id="remove-form"
+          >
+            Remove Selected
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- 右侧卡片：展示和修改时间段 -->
+    <div class="card-box" style="flex: 1;">
+      <h3>Course Time Selection</h3>
+      <div id="timeslot-panel">
+        <p>Select a course on the left to view and change available timeslots.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

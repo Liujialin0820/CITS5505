@@ -1,0 +1,49 @@
+{% extends 'front/front_base.html' %}
+
+{% block title %}
+    Class Management System
+{% endblock %}
+
+{% block head %}
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='front/css/front_dashboard.css') }}"
+    />
+    <script>
+      window.coursesData = {{ courses | tojson }};
+    </script>
+    <script src="{{ url_for('static', filename='front/js/upcoming_event.js') }}"></script>
+  
+{% endblock %}
+
+{% block main_content %}
+
+<div class="header">{{ today.strftime('%A, %B %d, %Y') }}</div>
+ 
+<div class="info-box">
+  <p><b>Timetable</b><br>
+  During the semester, you can view your allocated class times and check for any timetable changes. Use this section to stay informed about when and where your classes take place.</p>
+ 
+  <p><b>Preference</b><br>
+  During the preference entry period, use this section to submit your course preferences. If any courses are missing or unavailable, please refer to the Student FAQs or contact support.</p>
+ 
+  <p><b>Message</b><br>
+  You can use the messaging feature to communicate with classmates or instructors. Stay connected and up to date by checking this section regularly.</p>
+
+</div>
+
+      <div class="section-title">Action Required</div>
+      <p>No actions required</p>
+
+    </div>
+
+    <div class="events-panel">
+      <h3>Upcoming events</h3>
+      <div id="event">
+        <!-- JS will handle this -->
+      </div>
+
+      <a href="#" class="bottom-link">View All →</a>
+    </div>
+      
+{% endblock %}

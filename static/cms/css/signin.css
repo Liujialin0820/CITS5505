@@ -1,0 +1,121 @@
+/* Global page styles */
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 40px 0;
+  background-color: #f0f2f5;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.logo-box {
+  text-align: center;
+  padding-top: 40px;
+}
+.logo-box img {
+  width: 60px;
+  height: 60px;
+}
+/* Container card */
+.form-signin {
+  background: #ffffff;
+  padding: 40px 30px;
+  width: 100%;
+  max-width: 360px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  transition: transform 0.2s ease;
+  margin: auto;
+}
+.form-signin:hover {
+  transform: translateY(-2px);
+}
+
+/* Heading */
+.form-signin-heading {
+  margin-bottom: 24px;
+  font-size: 1.5rem;
+  text-align: center;
+  color: #333;
+}
+
+/* Hidden by default, re-styled checkbox area if ever used */
+.form-signin .checkbox {
+  margin-bottom: 16px;
+  font-weight: normal;
+}
+
+/* Inputs */
+.form-signin .form-control {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
+}
+.form-signin .form-control:focus {
+  border-color: #66afe9;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(102, 175, 233, 0.25);
+  z-index: 2;
+}
+
+/* Special adjustments for email/password spacing */
+.form-signin input[type="email"] {
+  margin-top: 0;
+}
+.form-signin input[type="password"] {
+  /* uniform spacing */
+}
+
+/* Submit button */
+.form-signin .btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: #28a745;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  cursor: pointer;
+}
+.form-signin .btn:hover {
+  background-color: #218838;
+}
+.form-signin .btn:active {
+  transform: translateY(1px);
+}
+
+/* “Already have an account” link */
+.form-signin p {
+  margin-top: 16px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+.form-signin p a {
+  color: #007bff;
+  text-decoration: none;
+}
+.form-signin p a:hover {
+  text-decoration: underline;
+}
+
+/* Error message */
+.form-signin .text-danger {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #dc3545;
+  text-align: center;
+}
