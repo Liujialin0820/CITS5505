@@ -174,5 +174,5 @@
   margin: 6px 0;
   max-width: 70%;
   word-wrap: break-word;
-  user-select: text;
+  user-select: text; /* ✅ 允许选中 */
 }
