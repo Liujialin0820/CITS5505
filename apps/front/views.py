@@ -38,7 +38,7 @@ def load_user():
 @login_required
 def index():
     user_id = session.get(Config.FRONT_USER_ID)
-    courses = Enrollment.get_user_enrollments_with_times(user_id)  # ✅ 使用已有的逻辑，带 timeslots
+    courses = Enrollment.get_user_enrollments_with_times(user_id)
     context = {"courses": courses, "today": datetime.today()}
     return render_template("front/front_dashboard.html", **context)
 
