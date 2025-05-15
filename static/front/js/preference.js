@@ -1,12 +1,12 @@
 // -------------------------------
-// 1. 加载并展示学生选课与已选时间
+// 1. Load and display enrolled courses and selected timeslots
 // -------------------------------
 function loadCourses() {
   const $courseSelect = $("#existing-courses");
   $courseSelect.empty();
 
   $.get("/my_courses/", function (res) {
-    // 接口直接返回数组
+    // The API directly returns an array
     const courses = Array.isArray(res) ? res : (res.courses || []);
 
     if (courses.length > 0) {
@@ -15,7 +15,7 @@ function loadCourses() {
       courses.forEach(function (course) {
         let label = course.course_name;
 
-        // 使用 course.timeslot 而不是 timeslots 数组
+        // Use course.timeslot instead of a timeslots array
         const slot = course.timeslot;
         if (slot) {
           const timeStr = `${days[slot.day_of_week-1]} ${slot.start_hour}:00 (${slot.duration_hours}h)`;
@@ -45,7 +45,7 @@ function loadCourses() {
 }
 
 // -------------------------------
-// 2. 渲染右侧“修改时间”面板
+// 2. Render the right-side "Modify Timeslot" panel
 // -------------------------------
 function renderTimeslotPanel(courseId) {
   if (!courseId) {
@@ -83,13 +83,13 @@ function renderTimeslotPanel(courseId) {
 }
 
 // -------------------------------
-// 3. 所有交互放到一个 document.ready
+// 3. All interactions inside document.ready
 // -------------------------------
 $(function () {
-  // 初始加载
+  // Initial load
   loadCourses();
 
-  // 点击“Add Course”
+  // Click “Add Course”
   $("#add_course").click(function (e) {
     e.preventDefault();
     const selectedCourseId = $("#add-course").val();
@@ -109,7 +109,7 @@ $(function () {
       .fail(zlalert.alertNetworkError);
   });
 
-  // 点击“Remove Selected”
+  // Click “Remove Selected”
   $("#remove-form").click(function (e) {
     e.preventDefault();
     const selected = $("#existing-courses").val();
@@ -141,7 +141,7 @@ $(function () {
     });
   });
 
-  // 监听左侧课程选择变化，渲染右侧面板
+  // Listen to course selection change, update right-side panel
   $("#existing-courses").on("change", function () {
     const sel = $(this).val();
     if (sel && sel.length === 1) {
@@ -153,7 +153,7 @@ $(function () {
     }
   });
 
-  // 提交更新 timeslot
+  // Submit updated timeslot
   $("#timeslot-panel").on("submit", "#timeslot-form", function (e) {
     e.preventDefault();
     const courseId = $("#existing-courses").val()[0];
@@ -165,7 +165,7 @@ $(function () {
       .done(function (res) {
         if (res.code === 200) {
           zlalert.alertSuccessToast("Timeslot updated successfully!");
-          // 刷新左右两边
+          // Refresh both course list and panel
           loadCourses();
           renderTimeslotPanel(courseId);
         } else {

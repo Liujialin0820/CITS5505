@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from .models import CourseModel  # 根据你的项目路径调整导入方式
+from .models import CourseModel  # Modify the import statement based on your project's directory structure
 
 bp = Blueprint("common", __name__, url_prefix="/common")
 

@@ -7,8 +7,8 @@
 
 .calendar-wrapper {
     padding: 20px;
-    flex-grow: 1; /* 让它填充剩余空间 */
-    max-width: none; /* 删除 1200px 限制 */
+    flex-grow: 1; /* Allows it to expand and fill remaining space */
+    max-width: none; /* Removes the default 1200px max-width constraint */
     margin: 0;
 
     max-height: 700px;
@@ -28,7 +28,7 @@
 .calendar-grid {
     display: grid;
     grid-template-columns: 80px repeat(7, 1fr);
-    grid-template-rows: 50px repeat(24, 60px); /* 24小时版 */
+    grid-template-rows: 50px repeat(24, 60px); /* 24-hour version */
     background-color: #e5e7eb;
     border: 1px solid #d1d5db;
     border-radius: 8px;
@@ -85,7 +85,7 @@
   .event {
     margin-bottom: 15px;
     padding-left: 5px;
-    border-left: 5px solid #003087; /* 默认值会被 JS 覆盖 */
+    border-left: 5px solid #003087; /* Default value will be overridden by JavaScript */
   }
   
   .event-title {
@@ -115,7 +115,7 @@
 
 .content-wrapper {
     display: flex;
-    flex-wrap: nowrap; /* 重要：防止换行，events-panel 保持右侧 */
+    flex-wrap: nowrap; /* Important: Prevent line breaks to keep events-panel on the right */
     align-items: flex-start;
     gap: 20px;
 }
@@ -123,7 +123,7 @@
 
 .events-panel {
     width: 300px;
-    flex-shrink: 0; /* 防止 events-panel 被压缩 */
+    flex-shrink: 0; /* Prevent events-panel from being compressed */
 }
 
 @media (max-width: 768px) {

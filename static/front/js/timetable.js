@@ -1,5 +1,5 @@
 window.addEventListener('load', function () {
-    // 滚动到上午9点
+    // Scroll to 9:00 AM
     const body = document.querySelector('.calendar-body');
     if (body) {
       body.scrollTop = 540;
@@ -8,14 +8,14 @@ window.addEventListener('load', function () {
     const courses = window.coursesData;
     const grid = document.querySelector('.calendar-grid');
   
-    const cellHeight = 60;                // 每小时格子高度
-    const timeColumnWidth = 80;           // 第一列“时间”的宽度
+    const cellHeight = 60;                // Height of each hourly cell
+    const timeColumnWidth = 80;           // Width of the first "Time" column
     const totalGridWidth = grid.offsetWidth;
   
     const dayColumnWidth = Math.floor((totalGridWidth - timeColumnWidth) / 7);
     const lastColumnWidth = totalGridWidth - timeColumnWidth - dayColumnWidth * 6;
   
-    // 🎨 自动分配颜色给不同课程
+    // 🎨 Automatically assign a color to each course
     const courseColors = [
       '#90caf9', '#a5d6a7', '#ffcc80',
       '#ce93d8', '#f48fb1', '#bcaaa4',
@@ -25,7 +25,7 @@ window.addEventListener('load', function () {
     let colorIndex = 0;
   
     courses.forEach(course => {
-      // 如果该课程还没颜色，分配一个
+      // If the course has no color assigned yet, assign one
       if (!courseColorMap[course.course_name]) {
         courseColorMap[course.course_name] = courseColors[colorIndex % courseColors.length];
         colorIndex++;
@@ -118,7 +118,7 @@ window.addEventListener('load', function () {
     window.addEventListener('load', resizeClassBlocks);
     window.addEventListener('resize', resizeClassBlocks);
     window.addEventListener('resize', () => {
-        location.reload(); // 简单粗暴法：页面大小变化时自动刷新
+        location.reload(); // Quick and dirty: reload on window resize
       });
       
     

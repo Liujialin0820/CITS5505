@@ -18,7 +18,7 @@ from apps.common.models import CourseModel
 from .decorators import login_required
 from sqlalchemy import or_
 from .models import Enrollment
-from apps.front.models import Message  # 确保你有这个模型
+from apps.front.models import Message  # Inspect if there is clear list
 from ..common.models import CourseModel, WeeklyTimeSlot
 from datetime import datetime
 
@@ -131,7 +131,7 @@ def send_message():
     try:
         sender_id = session.get(Config.FRONT_USER_ID)
 
-        # ✅ 不要转成 int，直接作为字符串传入
+        # ✅ Do not convert to int, pass as string directly
         message = Message(sender_id=sender_id, receiver_id=receiver_id, content=content)
 
         db.session.add(message)
@@ -192,7 +192,7 @@ class SigninView(views.MethodView):
 
 class TimetableView(views.MethodView):
     def get(self, uid=None):
-        # 优先从URL参数中获取uid，否则从session获取
+        # Prefer UID from URL param; fallback to session
         user_id = uid or session.get(Config.FRONT_USER_ID)
         if not user_id:
             return "用户未登录或未提供UID", 400
@@ -215,12 +215,12 @@ def add_enrollment():
     if not course:
         return jsonify({"code": 404, "message": "课程不存在"}), 404
 
-    # 可选：检查是否已选该课程，防止重复选课
+    # Optional: Check if course already enrolled to avoid duplicates
     exists = Enrollment.query.filter_by(user_id=user_id, course_id=course.id).first()
     if exists:
         return jsonify({"code": 409, "message": "您已选择该课程"}), 409
 
-    # 不绑定 timeslot
+    # Do not bind timeslot yet
     enrollment = Enrollment(
         user_id=user_id,
         course_id=course.id,
@@ -250,7 +250,7 @@ def remove_enrollment():
         return jsonify({"code": 400, "message": "No course IDs provided"}), 400
 
     try:
-        # 删除对应课程的 Enrollment 记录
+        # Remove the enrollment records for selected courses
         Enrollment.query.filter(
             Enrollment.user_id == user_id, Enrollment.course_id.in_(course_ids)
         ).delete(synchronize_session=False)
@@ -280,7 +280,7 @@ def view_my_courses():
         if not course:
             continue
 
-        # 取 enrollment 里关联的 timeslot（学生实际选的）
+        # Get timeslot linked to the enrollment (actual selection)
         ts = enrollment.timeslot
         if ts:
             timeslot_info = {
@@ -299,11 +299,11 @@ def view_my_courses():
             }
         )
 
-    # 如果前端 loadCourses() 按照 “纯数组” 来处理，就直接返回列表
+    # If frontend loadCourses() expects a pure array, just return list
     return jsonify(course_list), 200
 
 
-# 获取课程时间段
+# Get course timeslots
 @bp.route("/course_timeslots/<int:course_id>/")
 def course_timeslots(course_id):
     course = CourseModel.query.get(course_id)
@@ -323,7 +323,7 @@ def course_timeslots(course_id):
     return jsonify({"code": 200, "timeslots": timeslots})
 
 
-# 修改已选课程的时间段
+# Update timeslot for the selected course
 @bp.route("/update_timeslot/", methods=["POST"])
 def update_timeslot():
     course_id = request.form.get("course_id")

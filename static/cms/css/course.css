@@ -1,6 +1,6 @@
 /* cms/static/cms/css/course.css */
 
-/* 顶部操作区 */
+/* Top action bar */
 .top-box {
     margin-bottom: 20px;
     overflow: hidden;
@@ -9,7 +9,7 @@
     margin-top: 0;
   }
   
-  /* 课程表格 */
+  /* Course table */
   .table {
     background-color: #fff;
   }
@@ -23,7 +23,7 @@
     font-weight: 600;
   }
   
-  /* 时段列表 */
+  /* Timeslot list */
   .list-unstyled {
     padding-left: 0;
     margin-bottom: 0;
@@ -37,12 +37,12 @@
     border-bottom: none;
   }
   
-  /* “Add slot” 按钮 */
+  /* "Add slot" button */
   .add-timeslot-btn {
     margin-top: 8px;
   }
   
-  /* 小尺寸链接按钮 */
+  /* Small-sized link button */
   .edit-timeslot-btn,
   .delete-timeslot-btn {
     padding: 0 4px;
@@ -55,12 +55,12 @@
     text-decoration: underline;
   }
   
-  /* “Add New course” 按钮 */
+  /* "Add New Course" button */
   #add-course-btn {
     font-size: 14px;
   }
   
-  /* Modal 弹窗 */
+  /* Modal popup */
   #timeslotModal .modal-dialog {
     max-width: 360px;
   }
@@ -86,7 +86,7 @@
     min-width: 80px;
   }
   
-  /* 响应式调整 */
+  /* Responsive adjustments */
   @media (max-width: 480px) {
     .table-responsive {
       overflow-x: auto;

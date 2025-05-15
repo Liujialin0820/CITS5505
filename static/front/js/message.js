@@ -1,7 +1,6 @@
 let chatTargetId = null;
 let currentUserId = null;
 
-
 $.ajaxSetup({
   beforeSend: function (xhr, settings) {
     const token = $('meta[name="csrf-token"]').attr('content');
