@@ -1,7 +1,6 @@
 let chatTargetId = null;
 let currentUserId = null;
 
-// ✅ Configure a global CSRF token header for AJAX requests
 $.ajaxSetup({
   beforeSend: function (xhr, settings) {
     const token = $('meta[name="csrf-token"]').attr('content');
@@ -62,7 +61,7 @@ function openUserSelector() {
       ul.append(li);
     });
 
-    $("#user-selector").show();
+    $("#user-selector").removeClass("hidden").show();
   }).fail(function (xhr) {
     console.error("❌ Failed to fetch /api/users", xhr.responseText);
   });
@@ -83,7 +82,10 @@ $(function () {
     openUserSelector();
   });
 
-  
+  $("#close-user-popup").click(function () {
+    $("#user-selector").addClass("hidden").hide();
+  });
+
 
   $("#message-form").submit(function (e) {
     e.preventDefault();
