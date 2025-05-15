@@ -9,6 +9,11 @@
     rel="stylesheet"
     href="{{ url_for('static', filename='front/css/front_dashboard.css') }}"
     />
+    <script>
+      window.coursesData = {{ courses | tojson }};
+    </script>
+    <script src="{{ url_for('static', filename='front/js/upcoming_event.js') }}"></script>
+  
 {% endblock %}
 
 {% block main_content %}
@@ -34,37 +39,11 @@
 
     <div class="events-panel">
       <h3>Upcoming events</h3>
-      <div class="event">
-        <time>28 Apr Mon<br />12:00 am - 01:00 am</time>
-        <div class="event-title">CITS3301 - Lecture-01</div>
+      <div id="event">
+        <!-- JS will handle this -->
       </div>
-      <div class="event">
-        <time>28 Apr Mon<br />06:00 pm - 08:00 pm</time>
-        <div class="event-title">PHIL4100 - Wshp-01</div>
-      </div>
-      <div class="event">
-        <time>28 Apr Mon<br />07:00 pm - 09:00 pm</time>
-        <div class="event-title">CITS5508 - LecTut-01</div>
-      </div>
-      <div class="event">
-        <time>28 Apr Mon<br />08:00 pm - 10:00 pm</time>
-        <div class="event-title">CITS3301 - Workshop-01</div>
-      </div>
-      <div class="event">
-        <time>30 Apr Wed<br />01:00 am - 03:00 am</time>
-        <div class="event-title">CITS5505 - Lecture-01</div>
-      </div>
-      <div class="event">
-        <time>1 May Thu<br />06:00 pm - 08:00 pm</time>
-        <div class="event-title">CITS5505 - LecTut-01</div>
-      </div>
-      <div class="event">
-        <time>5 May Mon<br />12:00 am - 01:00 am</time>
-        <div class="event-title">CITS3301 - Lecture-01</div>
-      </div>
-      <div class="event">
-        <time>5 May Mon<br />06:00 pm - 08:00 pm</time>
-        <div class="event-title">PHIL4100 - Wshp-01</div>
-      </div>
+
       <a href="#" class="bottom-link">View All →</a>
+    </div>
+      
 {% endblock %}
