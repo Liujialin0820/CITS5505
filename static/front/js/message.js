@@ -124,7 +124,7 @@ $(function () {
       type: "POST",
       data: JSON.stringify({
         receiver_id: chatTargetId,
-        content: `Here is my timetable: ${timetableLink}`
+        content: `Here is my timetable: <a href="${timetableLink}" target="_blank">${timetableLink}</a>`
       }),
       contentType: "application/json",
       success: function () {
