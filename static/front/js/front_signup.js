@@ -41,22 +41,27 @@ $(function () {
 });
 
 $(function () {
+  // Handle signup form submission
   $("#submit-btn").click(function (event) {
-    event.preventDefault();
+    event.preventDefault();  // Prevent default form submission behavior
+
+    // Select input fields by name attribute
     var email_input = $("input[name='email']");
     var username_input = $("input[name='new_student']");
     var password1_input = $("input[name='password1']");
     var password2_input = $("input[name='password2']");
     var stu_id_input = $("input[name='student_number']");
 
+    // Get their current values
     var email = email_input.val();
     var stu_id = stu_id_input.val();
     var username = username_input.val();
     var password1 = password1_input.val();
     var password2 = password2_input.val();
 
+    // Submit signup request using custom AJAX utility
     zlajax.post({
-      url: "/signup/",
+      url: "/signup/",  // Server endpoint to handle registration
       data: {
         email: email,
         username: username,
@@ -66,14 +71,18 @@ $(function () {
       },
       success: function (data) {
         if (data["code"] == 200) {
+          // Redirect to homepage on success
           window.location = "/";
         } else {
+          // Show error message from server response
           zlalert.alertInfo(data["message"]);
         }
       },
       fail: function () {
+        // Network error handler
         zlalert.alertNetworkError();
       },
     });
   });
 });
+
