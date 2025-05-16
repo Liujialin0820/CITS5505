@@ -86,6 +86,14 @@ flask db upgrade
 flask run
 
 
+# test 
+1. use front_end_selenium_test.side in firefox selenium ide
+2. run test file in terminal
+python -m pytest .\tests\test_student_signup.py
+python -m pytest .\tests\test_student_login.py
+python -m pytest .\tests\test_admin_login.py
+python -m pytest .\tests\test_admin_add_course.py
+python -m pytest tests/test_message_unit.py
 
 
 
