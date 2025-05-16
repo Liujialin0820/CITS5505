@@ -60,20 +60,20 @@ The platform is designed for ease of use, visual clarity, and scheduling flexibi
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-repo-url.git
-cd your-repo-folder
+git clone https://github.com/Liujialin0820/CITS5505.git
+cd CITS5505
 
 # Create and activate virtual environment
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
+# Install dependencies
+pip install -r requirements.txt
+
 # Setup database 
 flask db init
 flask db migrate -m "comment"
 flask db upgrade
-
-# Install dependencies
-pip install -r requirements.txt
 
 # Run the Flask app
 flask run
