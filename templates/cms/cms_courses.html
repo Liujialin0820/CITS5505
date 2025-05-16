@@ -1,17 +1,28 @@
-{% extends 'cms/cms_base.html' %} {% from "common/_macros.html" import static %}
-{% block title %}Course Management{% endblock %} {% block head %}
+{% extends 'cms/cms_base.html' %} 
+{% from "common/_macros.html" import static %}
+
+{% block title %}Course Management{% endblock %} 
+
+{% block head %}
+<!-- Load CSS and JS for course management -->
 <link
   href="{{ url_for('static', filename='cms/css/course.css') }}"
   rel="stylesheet"
 />
 <script src="{{ static('cms/js/courses.js') }}"></script>
-{% endblock %} {% block page_title %} {{ self.title() }} {% endblock %} {% block
-main_content %}
+{% endblock %} 
+
+{% block page_title %} {{ self.title() }} {% endblock %} 
+
+{% block main_content %}
+<!-- Top button to add a new course -->
 <div class="top-box">
   <button class="btn btn-warning pull-right" id="add-course-btn">
     Add New course
   </button>
 </div>
+
+<!-- Table displaying course data -->
 <table class="table table-bordered">
   <thead>
     <tr>
@@ -27,6 +38,7 @@ main_content %}
       <td>{{ course.name }}</td>
       <td>0</td>
       <td>
+        <!-- List of all timeslots for this course -->
         <ul class="list-unstyled">
           {% for slot in course.timeslots %}
           <li>
@@ -34,6 +46,7 @@ main_content %}
             ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][slot.day_of_week-1]
             }} {{ '%02d:00' % slot.start_hour }} - {{ '%02d:00' %
             ((slot.start_hour + slot.duration_hours) % 24) }}
+            <!-- Button to edit this timeslot -->
             <button
               class="btn btn-link btn-xs edit-timeslot-btn"
               data-id="{{ slot.id }}"
@@ -43,6 +56,7 @@ main_content %}
             >
               edit
             </button>
+            <!-- Button to delete this timeslot -->
             <button
               class="btn btn-link btn-xs text-danger delete-timeslot-btn"
               data-id="{{ slot.id }}"
@@ -52,11 +66,13 @@ main_content %}
           </li>
           {% endfor %}
         </ul>
+        <!-- Button to add a new timeslot -->
         <button class="btn btn-xs btn-success add-timeslot-btn">
           ＋ Add slot
         </button>
       </td>
       <td>
+        <!-- Buttons to edit or delete the course -->
         <button class="btn btn-default btn-xs edit-course-btn">edit</button>
         <button class="btn btn-danger btn-xs delete-course-btn">delete</button>
       </td>
@@ -65,7 +81,7 @@ main_content %}
   </tbody>
 </table>
 
-<!-- Timeslot Modal -->
+<!-- Modal window for editing or adding a timeslot -->
 <div class="modal fade" id="timeslotModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -76,6 +92,8 @@ main_content %}
         <form id="timeslot-form">
           <input type="hidden" name="course_id" id="modal-course-id" />
           <input type="hidden" name="timeslot_id" id="modal-timeslot-id" />
+          
+          <!-- Select day of the week -->
           <div class="form-group">
             <label>Day of Week</label>
             <select class="form-control" id="modal-day" name="day_of_week">
@@ -86,6 +104,8 @@ main_content %}
               {% endfor %}
             </select>
           </div>
+
+          <!-- Select starting hour -->
           <div class="form-group">
             <label>Start Hour</label>
             <select
@@ -98,6 +118,8 @@ main_content %}
               {% endfor %}
             </select>
           </div>
+
+          <!-- Select duration in hours -->
           <div class="form-group">
             <label>Duration (hours)</label>
             <select
@@ -112,6 +134,8 @@ main_content %}
           </div>
         </form>
       </div>
+
+      <!-- Modal footer with save and cancel buttons -->
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" id="save-timeslot-btn">
           Save

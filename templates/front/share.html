@@ -1,16 +1,19 @@
 {% extends 'front/front_base.html' %}
 
 {% block title %}
-Share Schedule
+Share Schedule  <!-- Page title shown in browser tab -->
 {% endblock %}
 
 {% block main_content %}
 <div class="main-content">
+  <!-- Page header -->
   <h2 class="header">Share Your Schedule</h2>
 
   <div class="info-box">
+    <!-- Form to share a schedule with selected users -->
     <form action="#" method="POST">
       <div class="form-group">
+        <!-- Dropdown to select a schedule to share -->
         <label for="schedule">Select a Schedule:</label>
         <select id="schedule" name="schedule" required>
           <option value="">-- Please Select --</option>
@@ -20,6 +23,7 @@ Share Schedule
       </div>
 
       <div class="form-group">
+        <!-- Multi-select to choose users to share with -->
         <label for="users">Select Users to Share With:</label>
         <select id="users" name="users" multiple required>
           <option>Friend A</option>
@@ -29,10 +33,12 @@ Share Schedule
       </div>
 
       <div class="form-group">
+        <!-- Submit button to share the selected schedule -->
         <button type="submit" class="share-button">Share Schedule</button>
       </div>
     </form>
 
+    <!-- Placeholder to display success or error message -->
     <div id="message" style="margin-top: 20px;">
       <!-- Message Placeholder -->
     </div>

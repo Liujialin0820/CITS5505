@@ -2,36 +2,42 @@
 {% from "common/_macros.html" import static %}
 
 {% block title %}
-    Class Management System
+    Class Management System  <!-- Page title shown in browser tab -->
 {% endblock %}
 
 {% block head %}
+    <!-- Load custom JavaScript for login form -->
     <script src="{{ static("front/js/front_signin.js") }}"></script>
 {% endblock %}
 
 {% block h2_block %}
-    <p>Please Login</p>
+    <p>Student Login</p>  <!-- Page header text -->
 {% endblock %}
 
 {% block signbox %}
+    <!-- Email input field -->
     <div class="form-group">
         <input type="text" class="form-control" name="email" placeholder="Enter Student Email">
     </div>
 
+    <!-- Password input field -->
     <div class="form-group">
         <input type="password" class="form-control" name="password" placeholder="Enter Password">
     </div>
 
+    <!-- Remember me checkbox -->
     <div class="checkbox">
         <label>
             <input type="checkbox" name="remember" value="1" checked>Remember Me 
         </label>
     </div>
     
+    <!-- Login button -->
     <div class="form-group">
         <button class="btn btn-warning btn-block" id="submit-btn">Login</button>
     </div>
 
+    <!-- Link to registration page -->
     <div class="form-group">
         <a href="{{ url_for("front.signup") }}" class="signup-link">Register</a>
     </div>

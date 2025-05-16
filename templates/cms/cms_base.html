@@ -3,58 +3,78 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- Page title block -->
     <title>{% block title %}{% endblock %}</title>
+    <!-- CSRF token for form protection -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    
+    <!-- jQuery library -->
     <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <!-- Bootstrap CSS -->
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS -->
     <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- CMS-specific CSS and JS -->
     <link rel="stylesheet" href="{{ static('cms/css/base.css') }}">
     <script src="{{ static('cms/js/base.js') }}"></script>
+
+    <!-- Common AJAX and Alert libraries -->
     <script src="{{ static("common/zlajax.js") }}"></script>
     <link rel="stylesheet" href="{{ static("common/sweetalert/sweetalert.css") }}">
     <script src="{{ static("common/sweetalert/sweetalert.min.js") }}"></script>
     <script src="{{ static("common/sweetalert/zlalert.js") }}"></script>
     
+    <!-- Extra head content block -->
     {% block head %}{% endblock %}
 </head>
 <body>
-     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <!-- Top navigation bar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
+          <!-- Collapsible toggle button for small screens -->
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
+          <!-- Application brand/logo -->
           <a class="navbar-brand" href="#">Class Management System</a>
         </div>
+        <!-- Navbar links -->
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">{{ g.cms_user.username }}</a></li>
-            <li><a href="{{ url_for('cms.logout') }}">Logout</a></li>
+            <li><a href="#">{{ g.cms_user.username }}</a></li> <!-- Logged-in admin name -->
+            <li><a href="{{ url_for('cms.logout') }}">Logout</a></li> <!-- Logout link -->
           </ul>
         </div>
       </div>
     </nav>
 
+    <!-- Main container -->
     <div class="container-fluid">
       <div class="row">
+          <!-- Sidebar navigation -->
           <div class="col-sm-3 col-md-2 sidebar">
               <ul class="nav-sidebar">
                 <li class="unfold"><a href="{{ url_for('cms.courses')}}">Home</a></li>
                 <li class="profile-li">
                     <a href="#">Profile Center<span></span></a>
                     <ul class="subnav">
-                        <li><a href="{{ url_for('cms.profile')}}">Info</a></li>
-                        <li><a href="{{ url_for('cms.resetpwd')}}">Password</a></li>
+                        <li><a href="{{ url_for('cms.profile')}}">Info</a></li> <!-- Profile info -->
+                        <li><a href="{{ url_for('cms.resetpwd')}}">Password</a></li> <!-- Reset password -->
                     </ul>
                 </li>
-
-            </ul>
+              </ul>
           </div>
+
+          <!-- Main content area -->
           <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <!-- Page title block -->
             <h1>{% block page_title %}{% endblock %}</h1>
+            <!-- Main content block -->
             <div class="main_content">
                 {% block main_content %}{% endblock %}
             </div>

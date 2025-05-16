@@ -2,42 +2,50 @@
 {% from 'common/_macros.html' import static %}
 
 {% block title %}
-    Sign Up
+    Sign Up  <!-- Page title shown in browser tab -->
 {% endblock %}
 
 {% block head %}
+    <!-- Load custom JavaScript for signup form -->
     <script src="{{ static('front/js/front_signup.js') }}"></script>
 {% endblock %}
 
 {% block h2_block %}
-    Account Registration
+    Account Registration  <!-- Header title displayed on the form -->
 {% endblock %}
 
 {% block signbox %}
+    <!-- Student name input field -->
     <div class="form-group " >
         <input type="text" class="form-control" name="new_student" autocomplete="off" placeholder="Student Name">
     </div>
 
+    <!-- Student number input field -->
     <div class="form-group">
         <input type="text" class="form-control" name="student_number" placeholder="Student Number">
     </div>
 
+    <!-- Email input field -->
     <div class="form-group">
         <input type="text" class="form-control" name="email" placeholder="Email">
     </div>
 
+    <!-- Password input field -->
     <div class="form-group" >
         <input type="password" class="form-control" name="password1" placeholder="Password">
     </div>
 
+    <!-- Confirm password input field -->
     <div class="form-group">
         <input type="password" class="form-control" name="password2" placeholder="Confirm Password">
     </div>
 
+    <!-- Submit registration button -->
     <div class="form-group">
         <button class="btn btn-warning btn-block" id="submit-btn">Register Now</button>
     </div>
 
+    <!-- Link to return to login page -->
     <div class="form-group">
         <a href="{{ url_for('front.signin') }}" class="return-link">Return to Login</a>
     </div>

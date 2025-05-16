@@ -1,14 +1,22 @@
-{% extends 'front/front_base.html' %} {% block title %} Select Courses - Class
-Management System {% endblock %} {% block head %}
+{% extends 'front/front_base.html' %} 
+
+{% block title %} 
+  Select Courses - Class Management System  <!-- Page title shown in browser tab -->
+{% endblock %} 
+
+{% block head %}
+<!-- Load custom CSS and JavaScript for preference selection -->
 <link
   rel="stylesheet"
   href="{{ url_for('static', filename='front/css/preference.css') }}"
 />
 <script src="{{ url_for('static',filename='front/js/preference.js') }}"></script>
 {% endblock %} 
+
 {% block main_content %}
 <div class="main-wrapper">
   <div class="row" style="display: flex; gap: 20px; height:95%; width: 80%;">
+    
     <!-- Left card: Add new course + Selected courses -->
     <div class="card-box" style="flex: 2.5; width: 100%;">
       <h3>Manage Your Courses</h3>

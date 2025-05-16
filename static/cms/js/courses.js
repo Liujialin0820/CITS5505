@@ -1,7 +1,4 @@
-/**
- * Created by hynev on 2017/12/29.
- */
-
+// Add new course
 $(function () {
   $("#add-course-btn").click(function (event) {
     event.preventDefault();
@@ -16,9 +13,9 @@ $(function () {
           },
           success: function (data) {
             if (data["code"] == 200) {
-              window.location.reload();
+              window.location.reload(); // Reload page on success
             } else {
-              zlalert.alertInfo(data["message"]);
+              zlalert.alertInfo(data["message"]); // Show error message
             }
           },
         });
@@ -27,6 +24,7 @@ $(function () {
   });
 });
 
+// Edit existing course
 $(function () {
   $(".edit-course-btn").click(function () {
     var self = $(this);
@@ -46,9 +44,9 @@ $(function () {
           },
           success: function (data) {
             if (data["code"] == 200) {
-              window.location.reload();
+              window.location.reload(); // Reload page on success
             } else {
-              zlalert.alertInfo(data["message"]);
+              zlalert.alertInfo(data["message"]); // Show error message
             }
           },
         });
@@ -57,6 +55,7 @@ $(function () {
   });
 });
 
+// Delete course
 $(function () {
   $(".delete-course-btn").click(function (event) {
     var self = $(this);
@@ -72,9 +71,9 @@ $(function () {
           },
           success: function (data) {
             if (data["code"] == 200) {
-              window.location.reload();
+              window.location.reload(); // Reload page on success
             } else {
-              zlalert.alertInfo(data["message"]);
+              zlalert.alertInfo(data["message"]); // Show error message
             }
           },
         });
@@ -83,29 +82,28 @@ $(function () {
   });
 });
 
-
 $(function () {
-  // 打开“添加时段”模态框
+  // Open "Add Timeslot" modal
   $('.add-timeslot-btn').click(function () {
     var tr = $(this).closest('tr');
     $('#modal-course-id').val(tr.data('id'));
     $('#modal-timeslot-id').val('');
     $('#modal-day').val(1);
     $('#modal-hour').val(0);
-    $('#timeslotModal').modal('show');
+    $('#timeslotModal').modal('show'); // Show modal
   });
 
-  // 打开“编辑时段”模态框
+  // Open "Edit Timeslot" modal
   $('.edit-timeslot-btn').click(function () {
     var btn = $(this);
     $('#modal-timeslot-id').val(btn.data('id'));
     $('#modal-course-id').val(btn.closest('tr').data('id'));
     $('#modal-day').val(btn.data('day'));
     $('#modal-hour').val(btn.data('hour'));
-    $('#timeslotModal').modal('show');
+    $('#timeslotModal').modal('show'); // Show modal
   });
 
-  // 删除时段
+  // Delete timeslot
   $('.delete-timeslot-btn').click(function () {
     var id = $(this).data('id');
     zlalert.alertConfirm({
@@ -115,15 +113,15 @@ $(function () {
           url: '/cms/dtimeslot/',
           data: { timeslot_id: id },
           success: function (data) {
-            if (data.code == 200) window.location.reload();
-            else zlalert.alertInfo(data.message);
+            if (data.code == 200) window.location.reload(); // Reload on success
+            else zlalert.alertInfo(data.message); // Show error on failure
           }
         });
       }
     });
   });
 
-  // 保存（添加或更新）时段
+  // Save timeslot (add or update)
   $('#save-timeslot-btn').click(function () {
     var formData = $('#timeslot-form').serialize();
     var url = $('#modal-timeslot-id').val() ? '/cms/utimeslot/' : '/cms/add_timeslot/';
@@ -131,8 +129,8 @@ $(function () {
       url: url,
       data: formData,
       success: function (data) {
-        if (data.code == 200) window.location.reload();
-        else zlalert.alertInfo(data.message);
+        if (data.code == 200) window.location.reload(); // Reload on success
+        else zlalert.alertInfo(data.message); // Show error on failure
       }
     });
   });
