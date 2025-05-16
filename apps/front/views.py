@@ -19,6 +19,7 @@ from .decorators import login_required
 from sqlalchemy import or_
 from .models import Enrollment
 from apps.front.models import Message  # Inspect if there is clear list
+from ..common.models import CourseModel, WeeklyTimeSlot
 from datetime import datetime
 
 bp = Blueprint("front", __name__)
@@ -48,6 +49,10 @@ def logout():
     session.clear()
     return redirect(url_for("front.signin"))
 
+
+from flask import session
+
+from flask import request
 
 
 @bp.route("/message/")

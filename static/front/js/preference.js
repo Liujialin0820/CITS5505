@@ -1,17 +1,6 @@
 // -------------------------------
 // 1. Load and display enrolled courses and selected timeslots
 // -------------------------------
-$.ajaxSetup({
-  beforeSend: function (xhr, settings) {
-    const csrfToken = $("meta[name='csrf-token']").attr("content");
-    if (csrfToken) {
-      xhr.setRequestHeader("X-CSRFToken", csrfToken);
-    }
-  }
-});
-
-
-
 function loadCourses() {
   const $courseSelect = $("#existing-courses");
   $courseSelect.empty();
