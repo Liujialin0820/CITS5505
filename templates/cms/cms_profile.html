@@ -1,29 +1,28 @@
 {% extends 'cms/cms_base.html' %} 
 
 {% block title %} 
-  Profile 
+  Profile  <!-- Page title shown in browser tab -->
 {% endblock %} 
 
-{%block page_title %} 
-  {{ self.title() }} 
+{% block page_title %} 
+  {{ self.title() }}  <!-- Displays the same title as the page block -->
 {% endblock %} 
-
 
 {% block main_content %}
-{% set user = g.cms_user %}
-<table class="table table-bordered">
+{% set user = g.cms_user %}  <!-- Get the currently logged-in CMS user -->
+<table class="table table-bordered">  <!-- Table to display user profile info -->
   <tbody>
     <tr>
       <td>Username:</td>
-      <td>{{ user.username }}</td>
+      <td>{{ user.username }}</td>  <!-- Display username -->
     </tr>
     <tr>
       <td>Email:</td>
-      <td>{{ user.email }}</td>
+      <td>{{ user.email }}</td>  <!-- Display email -->
     </tr>
     <tr>
       <td>Join Date:</td>
-      <td>{{ user.join_time }}</td>
+      <td>{{ user.join_time }}</td>  <!-- Display join date -->
     </tr>
   </tbody>
 </table>

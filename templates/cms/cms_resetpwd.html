@@ -2,43 +2,48 @@
 {% from "common/_macros.html" import static %}
 
 {% block title -%}
-    Change Password
+    Change Password  <!-- Page title shown in browser tab -->
 {%- endblock %}
 
 {% block page_title -%}
-    {{ self.title() }}
+    {{ self.title() }}  <!-- Title displayed as the page heading -->
 {%- endblock %}
 
 {% block head %}
     <style>
         .form-container {
-            width: 300px;
+            width: 300px;  /* Limit the form width for better layout */
         }
     </style>
-    <script src="{{ static("cms/js/resetpwd.js") }}"></script>
+    <script src="{{ static("cms/js/resetpwd.js") }}"></script>  <!-- Load JS for password reset -->
 {% endblock %}
 
 {% block main_content %}
+    <!-- Password change form -->
     <form action="" method="post">
         <div class="form-container">
+            <!-- Old password input -->
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon">Old Password</span>
                     <input type="password" class="form-control" name="oldpwd" placeholder="Enter your old password">
                 </div>
             </div>
+            <!-- New password input -->
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon">New Password</span>
                     <input type="password" class="form-control" name="newpwd" placeholder="Enter your new password">
                 </div>
             </div>
+            <!-- Confirm new password input -->
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon">Confirm Password</span>
                     <input type="password" class="form-control" name="newpwd2" placeholder="Confirm your new password">
                 </div>
             </div>
+            <!-- Submit button -->
             <div class="form-group">
                 <button class="btn btn-primary" id="submit">Save Now</button>
             </div>
