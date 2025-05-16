@@ -196,7 +196,7 @@ class TimetableView(views.MethodView):
         # Prefer UID from URL param; fallback to session
         user_id = uid or session.get(Config.FRONT_USER_ID)
         if not user_id:
-            return "用户未登录或未提供UID", 400
+            return "User not logged in or UID not provided.", 400
 
         course_data = Enrollment.get_user_enrollments_with_times(user_id)
         return render_template("front/time_table.html", courses=course_data)
