@@ -1,45 +1,38 @@
-{% extends 'front/front_signbase.html' %}  {# Inherit from the sign-in layout base #}
-{% from "common/_macros.html" import static %}  {# Use 'static' macro for asset paths #}
+{% extends 'front/front_signbase.html' %}
+{% from "common/_macros.html" import static %}
 
 {% block title %}
-    Class Management System  {# Sets the <title> of the page (browser tab) #}
+    Class Management System
 {% endblock %}
 
 {% block head %}
-    {# Page-specific JavaScript file for handling login logic #}
     <script src="{{ static("front/js/front_signin.js") }}"></script>
 {% endblock %}
 
 {% block h2_block %}
-    <p>Please Login</p>  {# Header text displayed above the login form #}
+    <p>Please Login</p>
 {% endblock %}
 
 {% block signbox %}
-    {# Email input field #}
     <div class="form-group">
         <input type="text" class="form-control" name="email" placeholder="Enter Student Email">
     </div>
 
-    {# Password input field #}
     <div class="form-group">
         <input type="password" class="form-control" name="password" placeholder="Enter Password">
     </div>
 
-    {# "Remember me" checkbox (checked by default) #}
     <div class="checkbox">
         <label>
             <input type="checkbox" name="remember" value="1" checked>Remember Me 
         </label>
     </div>
     
-    {# Submit button, JavaScript will attach to #submit-btn #}
     <div class="form-group">
         <button class="btn btn-warning btn-block" id="submit-btn">Login</button>
     </div>
 
-    {# Link to registration page for new users #}
     <div class="form-group">
         <a href="{{ url_for("front.signup") }}" class="signup-link">Register</a>
     </div>
 {% endblock %}
-

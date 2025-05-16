@@ -1,33 +1,22 @@
-{% extends 'cms/cms_base.html' %}  {# 📌 Inherit from base CMS layout #}
-{% from "common/_macros.html" import static %}
-
-{% block title %}Course Management{% endblock %}
-
-{% block head %}
-{# 📌 Include page-specific CSS and JS #}
+{% extends 'cms/cms_base.html' %} {% from "common/_macros.html" import static %}
+{% block title %}Course Management{% endblock %} {% block head %}
 <link
   href="{{ url_for('static', filename='cms/css/course.css') }}"
   rel="stylesheet"
 />
 <script src="{{ static('cms/js/courses.js') }}"></script>
-{% endblock %}
-
-{% block page_title %} {{ self.title() }} {% endblock %}
-
-{% block main_content %}
-{# Top bar with add-course button #}
+{% endblock %} {% block page_title %} {{ self.title() }} {% endblock %} {% block
+main_content %}
 <div class="top-box">
   <button class="btn btn-warning pull-right" id="add-course-btn">
     Add New course
   </button>
 </div>
-
-{# Courses table #}
 <table class="table table-bordered">
   <thead>
     <tr>
       <th>Course Name</th>
-      <th>Student Number</th>  {# Placeholder — not yet dynamic #}
+      <th>Student Number</th>
       <th>Class Time Slots</th>
       <th>Manage</th>
     </tr>
@@ -36,14 +25,13 @@
     {% for course in courses %}
     <tr data-id="{{ course.id }}">
       <td>{{ course.name }}</td>
-      <td>0</td>  {# TODO: Replace with actual enrolled count #}
+      <td>0</td>
       <td>
         <ul class="list-unstyled">
           {% for slot in course.timeslots %}
           <li>
-            {# Format and show day + time range #}
             {{
-              ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][slot.day_of_week-1]
+            ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][slot.day_of_week-1]
             }} {{ '%02d:00' % slot.start_hour }} - {{ '%02d:00' %
             ((slot.start_hour + slot.duration_hours) % 24) }}
             <button
@@ -77,7 +65,7 @@
   </tbody>
 </table>
 
-{# Modal dialog for adding/updating a timeslot #}
+<!-- Timeslot Modal -->
 <div class="modal fade" id="timeslotModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -88,7 +76,6 @@
         <form id="timeslot-form">
           <input type="hidden" name="course_id" id="modal-course-id" />
           <input type="hidden" name="timeslot_id" id="modal-timeslot-id" />
-
           <div class="form-group">
             <label>Day of Week</label>
             <select class="form-control" id="modal-day" name="day_of_week">
@@ -99,7 +86,6 @@
               {% endfor %}
             </select>
           </div>
-
           <div class="form-group">
             <label>Start Hour</label>
             <select
@@ -112,7 +98,6 @@
               {% endfor %}
             </select>
           </div>
-
           <div class="form-group">
             <label>Duration (hours)</label>
             <select
@@ -126,3 +111,16 @@
             </select>
           </div>
         </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="save-timeslot-btn">
+          Save
+        </button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

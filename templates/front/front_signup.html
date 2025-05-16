@@ -1,51 +1,43 @@
-{% extends 'front/front_signbase.html' %}  {# Extend from the base template for sign-in/sign-up pages #}
-{% from 'common/_macros.html' import static %}  {# Use 'static' macro to reference static files #}
+{% extends 'front/front_signbase.html' %}
+{% from 'common/_macros.html' import static %}
 
 {% block title %}
-    Sign Up  {# Sets the <title> for browser tab #}
+    Sign Up
 {% endblock %}
 
 {% block head %}
-    {# Include JS to handle signup form submission logic #}
     <script src="{{ static('front/js/front_signup.js') }}"></script>
 {% endblock %}
 
 {% block h2_block %}
-    Account Registration  {# Main heading above the sign-up form #}
+    Account Registration
 {% endblock %}
 
 {% block signbox %}
-    {# Student Name input field #}
-    <div class="form-group">
+    <div class="form-group " >
         <input type="text" class="form-control" name="new_student" autocomplete="off" placeholder="Student Name">
     </div>
 
-    {# Student Number / ID field #}
     <div class="form-group">
         <input type="text" class="form-control" name="student_number" placeholder="Student Number">
     </div>
 
-    {# Email address field #}
     <div class="form-group">
         <input type="text" class="form-control" name="email" placeholder="Email">
     </div>
 
-    {# Password input field (first entry) #}
-    <div class="form-group">
+    <div class="form-group" >
         <input type="password" class="form-control" name="password1" placeholder="Password">
     </div>
 
-    {# Password confirmation field #}
     <div class="form-group">
         <input type="password" class="form-control" name="password2" placeholder="Confirm Password">
     </div>
 
-    {# Submit button — triggers signup logic via JS (bound to #submit-btn) #}
     <div class="form-group">
         <button class="btn btn-warning btn-block" id="submit-btn">Register Now</button>
     </div>
 
-    {# Link to return to the login page #}
     <div class="form-group">
         <a href="{{ url_for('front.signin') }}" class="return-link">Return to Login</a>
     </div>
