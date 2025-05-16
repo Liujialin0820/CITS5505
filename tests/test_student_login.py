@@ -31,7 +31,7 @@ def test_student_login(client):
         'password': 'Secret123'
     }, follow_redirects=True)
 
-    # ✅ 检查 JSON 返回值
+    # ✅ Check JSON response
     assert response.status_code == 200
     json_data = response.get_json()
     assert json_data['code'] == 200
