@@ -9,7 +9,6 @@ from flask import (
     g,
     jsonify,
 )
-
 from .forms import (
     LoginForm,
     RegisterForm,
@@ -18,31 +17,28 @@ from .forms import (
     UpdatecourseForm,
     AddTimeslotForm,
     UpdateTimeslotForm,
-)  # Import all admin-related form classes
+)
+from .models import CMSUser
+from exts import db
+from .decorators import login_required
+from config import Config
+from utils import restful
+from apps.common.models import CourseModel, WeeklyTimeSlot
 
-from .models import CMSUser  # Admin user model
-from exts import db  # SQLAlchemy database connection
-from .decorators import login_required  # Decorator to protect routes with login check
-from config import Config  # Global config with session keys and constants
-from utils import restful  # Utility module for standard API responses
-from apps.common.models import CourseModel, WeeklyTimeSlot  # Shared models for course and scheduling
 
-# Blueprint for CMS (admin interface), accessible under /cms/
 bp = Blueprint("cms", __name__, url_prefix="/cms")
 
-# Logout route for CMS users
+
 @bp.route("/logout/")
 @login_required
 def logout():
-    del session[Config.CMS_USER_ID]  # Remove admin session info
-    return redirect(url_for("cms.login"))  # Redirect to login page
+    del session[Config.CMS_USER_ID]
+    return redirect(url_for("cms.login"))
 
 
-# Login view for admin users
 class LoginView(views.MethodView):
     def get(self, message=None):
-        return render_template("cms/login.html", message=message)  # Render login form
-
+        return render_template("cms/login.html", message=message)
 
     def post(self):
         form = LoginForm(request.form)
@@ -54,7 +50,7 @@ class LoginView(views.MethodView):
             if user and user.check_password(password):
                 session[Config.CMS_USER_ID] = user.id
                 if remember:
-                    session.permanent = True  # Session persists even after browser close
+                    session.permanent = True
                 return redirect(url_for("cms.courses"))
             else:
                 return self.get(message="email or password error")
@@ -63,11 +59,9 @@ class LoginView(views.MethodView):
             return self.get(message=message)
 
 
-# View to allow new CMS user registration
 class RegisterView(views.MethodView):
     def get(self, message=None):
         return render_template("cms/register.html", message=message)
-
 
     def post(self):
         form = RegisterForm(request.form)
@@ -81,10 +75,12 @@ class RegisterView(views.MethodView):
                 message = "Security code error. Please contact the administrator."
                 return self.get(message=message)
 
+            # check if already registered
             existing_user = CMSUser.query.filter_by(email=email).first()
             if existing_user:
                 return self.get(message="Email already registered")
 
+            # create new user
             user = CMSUser(username=username, password=password, email=email)
             db.session.add(user)
             db.session.commit()
@@ -95,21 +91,18 @@ class RegisterView(views.MethodView):
             return self.get(message=message)
 
 
-# Password reset view for logged-in CMS users
 class ResetPwdView(views.MethodView):
     decorators = [login_required]
 
-
     def get(self):
         return render_template("cms/cms_resetpwd.html")
-
 
     def post(self):
         form = ResetpwdForm(request.form)
         if form.validate():
             oldpwd = form.oldpwd.data
             newpwd = form.newpwd.data
-            user = g.cms_user  # Admin user loaded into g before request
+            user = g.cms_user
             if user.check_password(oldpwd):
                 user.password = newpwd
                 db.session.commit()
@@ -120,21 +113,18 @@ class ResetPwdView(views.MethodView):
             return restful.params_error(form.get_error())
 
 
-# CMS dashboard index page
 @bp.route("/")
 @login_required
 def index():
     return render_template("cms/cms_index.html")
 
 
-# Profile page for CMS user
 @bp.route("/profile/")
 @login_required
 def profile():
     return render_template("cms/cms_profile.html")
 
 
-# Course management interface
 @bp.route("/courses/")
 @login_required
 def courses():
@@ -143,7 +133,6 @@ def courses():
     return render_template("cms/cms_courses.html", **context)
 
 
-# Add a new course
 @bp.route("/acourse/", methods=["POST"])
 @login_required
 def acourse():
@@ -158,7 +147,6 @@ def acourse():
         return restful.params_error(message=form.get_error())
 
 
-# Update an existing course
 @bp.route("/ucourse/", methods=["POST"])
 @login_required
 def ucourse():
@@ -172,29 +160,27 @@ def ucourse():
             db.session.commit()
             return restful.success()
         else:
-            return restful.params_error(message="\u6ca1\u6709\u8fd9\u4e2a\u677f\u5757\uff01")  # "Course not found"
+            return restful.params_error(message="没有这个板块！")
     else:
         return restful.params_error(message=form.get_error())
 
 
-# Delete a course
 @bp.route("/dcourse/", methods=["POST"])
 @login_required
 def dcourse():
     course_id = request.form.get("course_id")
     if not course_id:
-        return restful.params_error("\u8bf7\u4f20\u5165\u677f\u5757id\uff01")
+        return restful.params_error("请传入板块id！")
 
     course = CourseModel.query.get(course_id)
     if not course:
-        return restful.params_error(message="\u6ca1\u6709\u8fd9\u4e2a\u677f\u5757\uff01")
+        return restful.params_error(message="没有这个板块！")
 
     db.session.delete(course)
     db.session.commit()
     return restful.success()
 
 
-# Add a timeslot to a course
 @bp.route("/add_timeslot/", methods=["POST"])
 @login_required
 def add_timeslot():
@@ -215,7 +201,7 @@ def add_timeslot():
     return restful.params_error(form.get_error())
 
 
-# Update a specific timeslot
+
 @bp.route("/utimeslot/", methods=["POST"])
 @login_required
 def update_timeslot():
@@ -232,7 +218,7 @@ def update_timeslot():
     return restful.params_error(form.get_error())
 
 
-# Delete a timeslot
+
 @bp.route("/dtimeslot/", methods=["POST"])
 @login_required
 def delete_timeslot():
@@ -245,7 +231,6 @@ def delete_timeslot():
     return restful.success()
 
 
-# Register class-based views for login, register, and password reset
 bp.add_url_rule("/login/", view_func=LoginView.as_view("login"))
 bp.add_url_rule("/register/", view_func=RegisterView.as_view("register"))
 bp.add_url_rule("/resetpwd/", view_func=ResetPwdView.as_view("resetpwd"))
