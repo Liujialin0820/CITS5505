@@ -1,29 +1,41 @@
-{% extends 'front/front_base.html' %} {% block title %} Select Courses - Class
-Management System {% endblock %} {% block head %}
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='front/css/preference.css') }}"
-/>
-<script src="{{ url_for('static',filename='front/js/preference.js') }}"></script>
-{% endblock %} 
+{% extends 'front/front_base.html' %}  {# Inherit from the main frontend layout #}
+
+{% block title %}
+  Select Courses - Class Management System  {# Sets the <title> of the page #}
+{% endblock %}
+
+{% block head %}
+  {# Stylesheet for preference page UI layout #}
+  <link rel="stylesheet" href="{{ url_for('static', filename='front/css/preference.css') }}" />
+  
+  {# JavaScript to handle add/remove course + timeslot interaction #}
+  <script src="{{ url_for('static',filename='front/js/preference.js') }}"></script>
+{% endblock %}
+
 {% block main_content %}
 <div class="main-wrapper">
   <div class="row" style="display: flex; gap: 20px; height:95%; width: 80%;">
-    <!-- Left card: Add new course + Selected courses -->
+
+    <!-- Left Card: Course Management (Add/Remove) -->
     <div class="card-box" style="flex: 2.5; width: 100%;">
       <h3>Manage Your Courses</h3>
 
-      <!-- Add new course -->
+      <!-- Add Course Section -->
       <form method="POST">
         <div class="form-group">
           <label for="add-course">Choose a Course to Add:</label>
           <select id="add-course" name="new_course" class="form-control">
             <option value="">-- Select a course to add --</option>
             {% for course in courses %}
-            <option value="{{ course.course_id }}">{{ course.course_name }}</option>
+              <option value="{{ course.course_id }}">{{ course.course_name }}</option>
             {% endfor %}
           </select>
-          <button type="button" class="btn btn-primary" style="margin-top: 10px" id="add_course">
+          <button
+            type="button"
+            class="btn btn-primary"
+            style="margin-top: 10px"
+            id="add_course"
+          >
             Add Course
           </button>
         </div>
@@ -31,7 +43,7 @@ Management System {% endblock %} {% block head %}
 
       <hr />
 
-      <!-- Selected courses -->
+      <!-- Selected Course List -->
       <form method="POST">
         <div class="form-group">
           <label for="existing-courses">Currently Selected Courses:</label>
@@ -42,7 +54,7 @@ Management System {% endblock %} {% block head %}
             multiple
             size="6"
           >
-            <option disabled>Loading your courses...</option>
+            <option disabled>Loading your courses...</option>  {# Placeholder text until JS loads courses #}
           </select>
           <div class="note">
             Hold Ctrl (Windows) or Command (Mac) to select multiple.
@@ -59,13 +71,16 @@ Management System {% endblock %} {% block head %}
       </form>
     </div>
 
-    <!-- Right card: Display and modify timeslots -->
+    <!-- Right Card: Timeslot Panel -->
     <div class="card-box" style="flex: 1;">
       <h3>Course Time Selection</h3>
       <div id="timeslot-panel">
         <p>Select a course on the left to view and change available timeslots.</p>
+        {# This area is populated dynamically with timeslot data via JS #}
       </div>
     </div>
+
   </div>
 </div>
 {% endblock %}
+

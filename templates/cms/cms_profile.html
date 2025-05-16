@@ -1,16 +1,18 @@
-{% extends 'cms/cms_base.html' %} 
+{% extends 'cms/cms_base.html' %}  {# Inherit from the base CMS layout #}
 
 {% block title %} 
-  Profile 
+  Profile  {# Sets the <title> of the page (used in browser tab) #}
 {% endblock %} 
 
-{%block page_title %} 
-  {{ self.title() }} 
+{% block page_title %} 
+  {{ self.title() }}  {# Uses the same title for the page heading #}
 {% endblock %} 
 
 
 {% block main_content %}
-{% set user = g.cms_user %}
+{% set user = g.cms_user %}  {# Access the current logged-in CMS user from Flask global 'g' #}
+
+{# Display basic user profile info in a table #}
 <table class="table table-bordered">
   <tbody>
     <tr>
@@ -23,7 +25,7 @@
     </tr>
     <tr>
       <td>Join Date:</td>
-      <td>{{ user.join_time }}</td>
+      <td>{{ user.join_time }}</td>  {# This is likely a datetime object, formatted by Jinja #}
     </tr>
   </tbody>
 </table>
