@@ -5,47 +5,47 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}{% endblock %}</title>  {# Dynamic title block #}
 
-    {# External libraries: jQuery, Bootstrap 3, and md5 #}
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+
+    <!-- jQuery library -->
     <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+    <!-- Bootstrap CSS and JS -->
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- MD5 library for hashing -->
     <script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
 
-    {# Custom utility and alert scripts #}
+    <!-- Common utility scripts -->
     <script src="{{ static('common/zlparam.js') }}"></script>
     <script src="{{ static("common/zlajax.js") }}"></script>
+
+    <!-- SweetAlert library for alerts -->
     <link rel="stylesheet" href="{{ static("common/sweetalert/sweetalert.css") }}">
     <script src="{{ static("common/sweetalert/sweetalert.min.js") }}"></script>
     <script src="{{ static("common/sweetalert/zlalert.js") }}"></script>
 
-    {# Custom font from Google Fonts #}
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
 
-    {# Main frontend-specific stylesheet #}
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='front/css/front_index.css') }}"
-    />
+    <!-- Main frontend stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='front/css/front_index.css') }}" />
 
-    {% block head %} {% endblock %}  {# Optional extra head content from child templates #}
+    {% block head %} {% endblock %} <!-- Additional page-specific head content -->
   </head>
 
   <body>
-    {# Sidebar navigation panel #}
+    <!-- Sidebar navigation layout -->
     <div class="sidebar">
       <div>
-        {# App logo #}
-        <img
-          src="{{ url_for('static',filename='common/images/logo.png')}}"
-          alt="Logo"
-          width="80"
-        />
-        {# Main navigation links #}
+        <!-- Logo at the top of sidebar -->
+        <img src="{{ url_for('static',filename='common/images/logo.png')}}" alt="Logo" width="80" />
+
+        <!-- Navigation links -->
         <nav>
           <a href="{{ url_for('front.index') }}">Dashboard</a>
           <a href="{{url_for('front.timetable')}}">Timetable</a>
@@ -54,36 +54,27 @@
         </nav>
       </div>
       
-      {# Sidebar footer: user info + logout #}
+      <!-- User info and logout button -->
       <div class="sidebar-footer">
         <div class="user-profile">
           <div class="user-info">
-            {# SVG user icon #}
-            <svg
-              class="user-icon"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-            >
+            <!-- User icon -->
+            <svg class="user-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path
                 fill="currentColor"
                 d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zm0 
                        2c-3.314 0-10 1.672-10 5v3h20v-3c0-3.328-6.686-5-10-5z"
               />
             </svg>
-            {# Display user name and student ID #}
+            <!-- Display username and student ID -->
             <div class="details">
               <span class="name">{{g.user.username}}</span>
               <span class="id">{{g.user.stu_id}}</span>
             </div>
           </div>
-
-          {# Logout button with icon #}
+          <!-- Logout button -->
           <a href="{{ url_for ('front.logout')}}" class="logout-btn">
-            <svg
-              class="logout-icon"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-            >
+            <svg class="logout-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path
                 fill="currentColor"
                 d="M16 17l5-5-5-5v3H9v4h7v3zM4 4h8v2H4v12h8v2H4a2 2 0 01-2-2V6a2 2 
@@ -95,7 +86,8 @@
       </div>
     </div>
 
-    {# Main content area rendered from child templates #}
+    <!-- Main content area -->
     <div class="main-content">{% block main_content %} {% endblock %}</div>
+
   </body>
 </html>

@@ -1,40 +1,42 @@
 $(function () {
-  // When the 'submit' button is clicked (for password reset)
   $("#submit").click(function (event) {
-    event.preventDefault();  // Prevent default form submission behavior
+    // Prevent default form submission behavior
+    event.preventDefault();
 
-    // Select the input fields for old and new passwords
+    // Get input elements for old password, new password, and confirmation
     var oldpwdE = $("input[name=oldpwd]");
     var newpwdE = $("input[name=newpwd]");
     var newpwd2E = $("input[name=newpwd2]");
 
-    // Extract their values
+    // Get the values from input fields
     var oldpwd = oldpwdE.val();
     var newpwd = newpwdE.val();
     var newpwd2 = newpwd2E.val();
 
-    // Send password change request to backend using custom AJAX wrapper
+    // Send POST request to reset password endpoint
     zlajax.post({
-      url: "/cms/resetpwd/",  // API endpoint for resetting password
+      url: "/cms/resetpwd/",
       data: {
         oldpwd: oldpwd,
         newpwd: newpwd,
         newpwd2: newpwd2,
       },
       success: function (data) {
-        // If success, show toast and clear input fields
+        // If password reset is successful
         if (data["code"] == 200) {
-          zlalert.alertSuccessToast("Password Changed!");  // Toast notification
-          oldpwdE.val("");  // Clear fields
+          zlalert.alertSuccessToast("Password Changed!");
+          // Clear the input fields
+          oldpwdE.val("");
           newpwdE.val("");
           newpwd2E.val("");
         } else {
-          var message = data["message"];  // Extract error message from response
-          zlalert.alertInfo(message);     // Show as alert
+          // If validation or server-side error occurs
+          var message = data["message"];
+          zlalert.alertInfo(message);
         }
       },
+      // Handle network or server failure
       fail: function (error) {
-        // Handle network failure (e.g. timeout, disconnect)
         zlalert.alertNetworkError();
       },
     });

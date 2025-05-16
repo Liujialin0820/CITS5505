@@ -1,54 +1,59 @@
 {% from 'common/_macros.html' import static%}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="csrf-token" content="{{ csrf_token() }}">  {# CSRF token for AJAX protection #}
-    <title>{% block title %}{% endblock %}</title>  {# Page-specific title block #}
+    <!-- CSRF token for security -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
+    <!-- Page title block -->
+    <title>{% block title %}{% endblock %}</title>
 
-    {# jQuery and Bootstrap CSS/JS via CDN #}
+    <!-- jQuery library -->
     <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+    <!-- Bootstrap CSS and JS -->
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    {# Optional utility for hashing passwords client-side (e.g., MD5 for tokens) #}
+    <!-- MD5 library for password hashing -->
     <script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
 
-    {# Custom parameter parser and AJAX wrapper utility #}
+    <!-- Custom parameter and AJAX utilities -->
     <script src="{{ static('common/zlparam.js') }}"></script>
     <script src="{{ static("common/zlajax.js") }}"></script>
 
-    {# SweetAlert for alert modals #}
+    <!-- SweetAlert library for popup alerts -->
     <link rel="stylesheet" href="{{ static("common/sweetalert/sweetalert.css") }}">
     <script src="{{ static("common/sweetalert/sweetalert.min.js") }}"></script>
     <script src="{{ static("common/sweetalert/zlalert.js") }}"></script>
 
-    {# Page-specific CSS for login/signup forms #}
+    <!-- Custom CSS for sign-in pages -->
     <link rel="stylesheet" href="{{ static('front/css/front_signbase.css') }}">
 
+    <!-- Additional head content (optional) -->
     {% block head %}
-    {# Optional extension point for extra CSS/JS in child templates #}
     {% endblock %}
 </head>
-
 <body>
-    <div class="outer-box">  {# Main container for the login/signup layout #}
-        
-        <div class="logo-box">  {# Logo at the top, links to home page #}
+    <!-- Outer container for the sign-in UI -->
+    <div class="outer-box">
+        <!-- Logo section -->
+        <div class="logo-box">
             <a href="/">
                 <img src="{{ static('common/images/logo.png') }}" alt="">
             </a>
         </div>
 
+        <!-- Page title block -->
         <h2 class="page-title">
-            {% block h2_block %}{% endblock %}  {# Title text like "Sign In" or "Register" #}
+            {% block h2_block %}{% endblock %}
         </h2>
 
+        <!-- Sign-in box content -->
         <div class="sign-box">
-            {% block signbox %}{% endblock %}  {# Form area (inputs, buttons, etc.) #}
+            {% block signbox %}{% endblock %}
         </div>
-
     </div>
 </body>
 </html>

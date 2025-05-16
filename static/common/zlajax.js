@@ -1,42 +1,34 @@
-$(function () {
-	// When the 'submit' button is clicked (for password reset)
-	$("#submit").click(function (event) {
-	  event.preventDefault();  // Prevent default form submission behavior
-  
-	  // Select the input fields for old and new passwords
-	  var oldpwdE = $("input[name=oldpwd]");
-	  var newpwdE = $("input[name=newpwd]");
-	  var newpwd2E = $("input[name=newpwd2]");
-  
-	  // Extract their values
-	  var oldpwd = oldpwdE.val();
-	  var newpwd = newpwdE.val();
-	  var newpwd2 = newpwd2E.val();
-  
-	  // Send password change request to backend using custom AJAX wrapper
-	  zlajax.post({
-		url: "/cms/resetpwd/",  // API endpoint for resetting password
-		data: {
-		  oldpwd: oldpwd,
-		  newpwd: newpwd,
-		  newpwd2: newpwd2,
-		},
-		success: function (data) {
-		  // If success, show toast and clear input fields
-		  if (data["code"] == 200) {
-			zlalert.alertSuccessToast("Password Changed!");  // Toast notification
-			oldpwdE.val("");  // Clear fields
-			newpwdE.val("");
-			newpwd2E.val("");
-		  } else {
-			var message = data["message"];  // Extract error message from response
-			zlalert.alertInfo(message);     // Show as alert
-		  }
-		},
-		fail: function (error) {
-		  // Handle network failure (e.g. timeout, disconnect)
-		  zlalert.alertNetworkError();
-		},
-	  });
-	});
-  });
+'use strict';
+var zlajax = {
+	// Send GET request using ajax
+	'get':function(args) {
+		args['method'] = 'get';
+		this.ajax(args);
+	},
+
+	// Send POST request using ajax
+	'post':function(args) {
+		args['method'] = 'post';
+		this.ajax(args);
+	},
+
+	// General ajax method that applies CSRF setup
+	'ajax':function(args) {
+		// Apply CSRF token setup before sending request
+		this._ajaxSetup();
+		$.ajax(args);
+	},
+
+	// Setup CSRF token for AJAX requests
+	'_ajaxSetup': function() {
+		$.ajaxSetup({
+			'beforeSend':function(xhr,settings) {
+				// Add CSRF token to the request header if method is not safe and request is not cross-domain
+				if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                    var csrftoken = $('meta[name=csrf-token]').attr('content');
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken)
+                }
+			}
+		});
+	}
+};

@@ -1,24 +1,21 @@
-/**
- * Created by hynev on 2017/12/29.
- */
-
+// Add new course
 $(function () {
-  // Handle click on 'Add Course' button
   $("#add-course-btn").click(function (event) {
-    event.preventDefault();  // Prevent default form submission
-
+    event.preventDefault();
     zlalert.alertOneInput({
-      text: "add new course name",       // Dialog message
-      placeholder: "course name",        // Input placeholder text
+      text: "add new course name",
+      placeholder: "course name",
       confirmCallback: function (inputValue) {
         zlajax.post({
-          url: "/cms/acourse/",          // Backend route for adding a course
-          data: { name: inputValue },    // Send course name entered
+          url: "/cms/acourse/",
+          data: {
+            name: inputValue,
+          },
           success: function (data) {
             if (data["code"] == 200) {
-              window.location.reload();  // Reload on success
+              window.location.reload(); // Reload page on success
             } else {
-              zlalert.alertInfo(data["message"]);  // Show error message
+              zlalert.alertInfo(data["message"]); // Show error message
             }
           },
         });
@@ -27,30 +24,29 @@ $(function () {
   });
 });
 
-
+// Edit existing course
 $(function () {
-  // Handle click on 'Edit Course' button
   $(".edit-course-btn").click(function () {
     var self = $(this);
-    var tr = self.parent().parent();           // Get the parent <tr>
-    var name = tr.attr("data-name");           // Original course name
-    var course_id = tr.attr("data-id");        // Course ID
+    var tr = self.parent().parent();
+    var name = tr.attr("data-name");
+    var course_id = tr.attr("data-id");
 
     zlalert.alertOneInput({
-      text: "change name",                     // Prompt message
-      placeholder: name,                       // Pre-fill current name
+      text: "change name",
+      placeholder: name,
       confirmCallback: function (inputValue) {
         zlajax.post({
-          url: "/cms/ucourse/",                // Backend route for updating course
+          url: "/cms/ucourse/",
           data: {
             course_id: course_id,
             name: inputValue,
           },
           success: function (data) {
             if (data["code"] == 200) {
-              window.location.reload();        // Reload page on success
+              window.location.reload(); // Reload page on success
             } else {
-              zlalert.alertInfo(data["message"]);  // Show error message
+              zlalert.alertInfo(data["message"]); // Show error message
             }
           },
         });
@@ -59,27 +55,25 @@ $(function () {
   });
 });
 
-
+// Delete course
 $(function () {
-  // Handle click on 'Delete Course' button
   $(".delete-course-btn").click(function (event) {
     var self = $(this);
     var tr = self.parent().parent();
     var course_id = tr.attr("data-id");
-
     zlalert.alertConfirm({
-      msg: "Delete?",  // Confirmation prompt
+      msg: "Delete?",
       confirmCallback: function () {
         zlajax.post({
-          url: "/cms/dcourse/",  // Backend route for deleting course
+          url: "/cms/dcourse/",
           data: {
             course_id: course_id,
           },
           success: function (data) {
             if (data["code"] == 200) {
-              window.location.reload();  // Reload if deletion successful
+              window.location.reload(); // Reload page on success
             } else {
-              zlalert.alertInfo(data["message"]);
+              zlalert.alertInfo(data["message"]); // Show error message
             }
           },
         });
@@ -88,56 +82,55 @@ $(function () {
   });
 });
 
-
 $(function () {
-  // Open modal to add new timeslot
+  // Open "Add Timeslot" modal
   $('.add-timeslot-btn').click(function () {
     var tr = $(this).closest('tr');
-    $('#modal-course-id').val(tr.data('id'));       // Set course ID
-    $('#modal-timeslot-id').val('');                // Clear timeslot ID
-    $('#modal-day').val(1);                         // Default: Monday
-    $('#modal-hour').val(0);                        // Default: 00:00
-    $('#timeslotModal').modal('show');              // Open modal
+    $('#modal-course-id').val(tr.data('id'));
+    $('#modal-timeslot-id').val('');
+    $('#modal-day').val(1);
+    $('#modal-hour').val(0);
+    $('#timeslotModal').modal('show'); // Show modal
   });
 
-  // Open modal to edit existing timeslot
+  // Open "Edit Timeslot" modal
   $('.edit-timeslot-btn').click(function () {
     var btn = $(this);
-    $('#modal-timeslot-id').val(btn.data('id'));            // Set timeslot ID
-    $('#modal-course-id').val(btn.closest('tr').data('id')); // Set course ID
-    $('#modal-day').val(btn.data('day'));                   // Fill day
-    $('#modal-hour').val(btn.data('hour'));                 // Fill hour
-    $('#timeslotModal').modal('show');                      // Show modal
+    $('#modal-timeslot-id').val(btn.data('id'));
+    $('#modal-course-id').val(btn.closest('tr').data('id'));
+    $('#modal-day').val(btn.data('day'));
+    $('#modal-hour').val(btn.data('hour'));
+    $('#timeslotModal').modal('show'); // Show modal
   });
 
-  // Confirm deletion of a timeslot
+  // Delete timeslot
   $('.delete-timeslot-btn').click(function () {
     var id = $(this).data('id');
     zlalert.alertConfirm({
       text: "Confirm delete this timeslot?",
       confirmCallback: function () {
         zlajax.post({
-          url: '/cms/dtimeslot/',      // Backend route to delete timeslot
+          url: '/cms/dtimeslot/',
           data: { timeslot_id: id },
           success: function (data) {
-            if (data.code == 200) window.location.reload();  // Refresh on success
-            else zlalert.alertInfo(data.message);            // Show error message
+            if (data.code == 200) window.location.reload(); // Reload on success
+            else zlalert.alertInfo(data.message); // Show error on failure
           }
         });
       }
     });
   });
 
-  // Submit form to save (add or update) timeslot
+  // Save timeslot (add or update)
   $('#save-timeslot-btn').click(function () {
-    var formData = $('#timeslot-form').serialize();  // Gather form data
-    var url = $('#modal-timeslot-id').val() ? '/cms/utimeslot/' : '/cms/add_timeslot/';  // Choose endpoint based on whether editing or adding
+    var formData = $('#timeslot-form').serialize();
+    var url = $('#modal-timeslot-id').val() ? '/cms/utimeslot/' : '/cms/add_timeslot/';
     zlajax.post({
       url: url,
       data: formData,
       success: function (data) {
-        if (data.code == 200) window.location.reload();  // Reload page
-        else zlalert.alertInfo(data.message);            // Show error message
+        if (data.code == 200) window.location.reload(); // Reload on success
+        else zlalert.alertInfo(data.message); // Show error on failure
       }
     });
   });

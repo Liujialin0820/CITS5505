@@ -1,56 +1,57 @@
-{% extends 'front/front_base.html' %}  {# Inherit from the main front-facing base template #}
+{% extends 'front/front_base.html' %}
 
 {% block title %}
-    Class Management System  {# Page <title> shown in the browser tab #}
+    Class Management System  <!-- Page title shown in browser tab -->
 {% endblock %}
 
 {% block head %}
-    {# Page-specific CSS #}
+    <!-- Link to custom dashboard CSS -->
     <link
     rel="stylesheet"
     href="{{ url_for('static', filename='front/css/front_dashboard.css') }}"
     />
 
-    {# Pass course data as a JavaScript global variable (to be used by upcoming_event.js) #}
+    <!-- Pass course data from Flask to JavaScript -->
     <script>
       window.coursesData = {{ courses | tojson }};
     </script>
 
-    {# Script that dynamically renders upcoming events #}
+    <!-- Load upcoming event JavaScript -->
     <script src="{{ url_for('static', filename='front/js/upcoming_event.js') }}"></script>
 {% endblock %}
 
 {% block main_content %}
 
-    {# Display today’s date at the top of the page #}
-    <div class="header">{{ today.strftime('%A, %B %d, %Y') }}</div>
+<!-- Display today's date -->
+<div class="header">{{ today.strftime('%A, %B %d, %Y') }}</div>
+ 
+<!-- Information box with feature descriptions -->
+<div class="info-box">
+  <p><b>Timetable</b><br>
+  During the semester, you can view your allocated class times and check for any timetable changes. Use this section to stay informed about when and where your classes take place.</p>
+ 
+  <p><b>Preference</b><br>
+  During the preference entry period, use this section to submit your course preferences. If any courses are missing or unavailable, please refer to the Student FAQs or contact support.</p>
+ 
+  <p><b>Message</b><br>
+  You can use the messaging feature to communicate with classmates or instructors. Stay connected and up to date by checking this section regularly.</p>
+</div>
 
-    {# Informational section describing features of the system #}
-    <div class="info-box">
-      <p><b>Timetable</b><br>
-      During the semester, you can view your allocated class times and check for any timetable changes. Use this section to stay informed about when and where your classes take place.</p>
+<!-- Action status section -->
+<div class="section-title">Action Required</div>
+<p>No actions required</p>
 
-      <p><b>Preference</b><br>
-      During the preference entry period, use this section to submit your course preferences. If any courses are missing or unavailable, please refer to the Student FAQs or contact support.</p>
+</div>
 
-      <p><b>Message</b><br>
-      You can use the messaging feature to communicate with classmates or instructors. Stay connected and up to date by checking this section regularly.</p>
-    </div>
+<!-- Upcoming events panel -->
+<div class="events-panel">
+  <h3>Upcoming events</h3>
+  <div id="event">
+    <!-- JS will handle this -->
+  </div>
 
-    {# Placeholder for any required student actions (e.g., pending selections) #}
-    <div class="section-title">Action Required</div>
-    <p>No actions required</p>
-
-    </div>  {# Probably leftover closing tag — check if necessary in base layout #}
-
-    {# Panel that will show upcoming class events, populated via JavaScript #}
-    <div class="events-panel">
-      <h3>Upcoming events</h3>
-      <div id="event">
-        <!-- JS will handle this -->
-      </div>
-
-      <a href="#" class="bottom-link">View All →</a>
-    </div>
+  <!-- Link to view all events -->
+  <a href="#" class="bottom-link">View All →</a>
+</div>
       
 {% endblock %}

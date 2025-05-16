@@ -1,18 +1,19 @@
-{% extends 'front/front_base.html' %}  {# Inherit from the main frontend layout #}
+{% extends 'front/front_base.html' %}
 
 {% block title %}
-  Share Schedule  {# Sets the <title> shown in browser tab #}
+Share Schedule  <!-- Page title shown in browser tab -->
 {% endblock %}
 
 {% block main_content %}
 <div class="main-content">
-  <h2 class="header">Share Your Schedule</h2>  {# Page title #}
+  <!-- Page header -->
+  <h2 class="header">Share Your Schedule</h2>
 
   <div class="info-box">
-    <form action="#" method="POST">  {# Form for sharing schedules #}
-
-      {# 🔹 Schedule selection dropdown #}
+    <!-- Form to share a schedule with selected users -->
+    <form action="#" method="POST">
       <div class="form-group">
+        <!-- Dropdown to select a schedule to share -->
         <label for="schedule">Select a Schedule:</label>
         <select id="schedule" name="schedule" required>
           <option value="">-- Please Select --</option>
@@ -21,8 +22,8 @@
         </select>
       </div>
 
-      {# User selection dropdown (multiple choice) #}
       <div class="form-group">
+        <!-- Multi-select to choose users to share with -->
         <label for="users">Select Users to Share With:</label>
         <select id="users" name="users" multiple required>
           <option>Friend A</option>
@@ -31,17 +32,16 @@
         </select>
       </div>
 
-      {# Submit button to trigger schedule sharing #}
       <div class="form-group">
+        <!-- Submit button to share the selected schedule -->
         <button type="submit" class="share-button">Share Schedule</button>
       </div>
     </form>
 
-    {# Placeholder for success/error messages (to be filled dynamically) #}
+    <!-- Placeholder to display success or error message -->
     <div id="message" style="margin-top: 20px;">
       <!-- Message Placeholder -->
     </div>
   </div>
 </div>
 {% endblock %}
-
