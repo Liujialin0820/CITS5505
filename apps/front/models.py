@@ -9,7 +9,6 @@ user_course_table = db.Table(
     db.Column("course_id", db.Integer, db.ForeignKey("course_model.id")),
 )
 
-
 class FrontUser(db.Model):
     __tablename__ = "front_user"
     id = db.Column(db.String(100), primary_key=True, default=shortuuid.uuid)
@@ -39,7 +38,7 @@ class FrontUser(db.Model):
 
     def check_password(self, rawpwd):
         return check_password_hash(self._password, rawpwd)
-
+    
 
 class Enrollment(db.Model):
     __tablename__ = "enrollment"
