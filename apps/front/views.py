@@ -9,31 +9,32 @@ from flask import (
     g,
     jsonify,
 )
-from .forms import SignupForm, SigninForm
-from utils import restful
-from .models import FrontUser
-from exts import db
-from config import Config
+from .forms import SignupForm, SigninForm  # Import form definitions for signup and signin
+from utils import restful  # Utility module for standard API responses
+from .models import FrontUser  # Import user model
+from exts import db  # SQLAlchemy database instance
+from config import Config  # Configuration settings (e.g., session keys)
 from apps.common.models import CourseModel
-from .decorators import login_required
-from sqlalchemy import or_
-from .models import Enrollment
-from apps.front.models import Message  # Inspect if there is clear list
-from ..common.models import CourseModel, WeeklyTimeSlot
-from datetime import datetime
+from .decorators import login_required  # Custom decorator to enforce login
+from sqlalchemy import or_  # SQLAlchemy OR filter
+from .models import Enrollment  # Import Enrollment model
+from apps.front.models import Message  # Messaging model
+from ..common.models import CourseModel, WeeklyTimeSlot  # Course and timeslot models
+from datetime import datetime  # Timestamp utility
 
+# Create Blueprint instance for frontend routes
 bp = Blueprint("front", __name__)
 
-
+# Set up user loading before each request in the app context
 @bp.before_app_request
 def load_user():
     user_id = session.get(Config.FRONT_USER_ID)
     if user_id:
-        g.user = FrontUser.query.get(user_id)
+        g.user = FrontUser.query.get(user_id)  # Attach user object to global context
     else:
         g.user = None
 
-
+# Main dashboard page (requires login)
 @bp.route("/")
 @login_required
 def index():
@@ -42,26 +43,21 @@ def index():
     context = {"courses": courses, "today": datetime.today()}
     return render_template("front/front_dashboard.html", **context)
 
-
+# Log the user out and clear session
 @bp.route("/logout/")
 @login_required
 def logout():
     session.clear()
     return redirect(url_for("front.signin"))
 
-
-from flask import session
-
-from flask import request
-
-
+# Message page rendering for the current user
 @bp.route("/message/")
 @login_required
 def message_page():
     user_id = session.get(Config.FRONT_USER_ID)
     return render_template("front/message.html", current_user_id=user_id)
 
-
+# API to retrieve all users except the current user
 @bp.route("/api/users")
 @login_required
 def get_users():
@@ -71,7 +67,7 @@ def get_users():
         data={"users": [{"id": u.id, "username": u.username} for u in users]}
     )
 
-
+# API to retrieve messages between current user and another user
 @bp.route("/api/messages")
 @login_required
 def get_messages():
@@ -109,10 +105,10 @@ def get_messages():
         )
 
     except Exception as e:
-        print("❌ Error in /api/messages:", str(e))
+        print("\u274c Error in /api/messages:", str(e))
         return restful.server_error(message="Internal error fetching messages.")
 
-
+# API endpoint to send a new message
 @bp.route("/api/send_message", methods=["POST"])
 @login_required
 def send_message():
@@ -131,20 +127,18 @@ def send_message():
 
     try:
         sender_id = session.get(Config.FRONT_USER_ID)
-
-        # ✅ Do not convert to int, pass as string directly
         message = Message(sender_id=sender_id, receiver_id=receiver_id, content=content)
 
         db.session.add(message)
         db.session.commit()
-        print(f"✅ Message saved: {sender_id} -> {receiver_id}: {content}")
+        print(f"\u2705 Message saved: {sender_id} -> {receiver_id}: {content}")
         return restful.success()
 
     except Exception as e:
-        print("❌ Exception in send_message:", e)
+        print("\u274c Exception in send_message:", e)
         return restful.server_error(message="Internal error when saving message.")
 
-
+# View class for signup (GET: form, POST: register)
 class SignupView(views.MethodView):
     def get(self):
         return render_template("front/front_signup.html")
@@ -166,7 +160,7 @@ class SignupView(views.MethodView):
         else:
             return restful.params_error(message=form.get_error())
 
-
+# View class for signin (GET: form, POST: login logic)
 class SigninView(views.MethodView):
     def get(self):
         return render_template("front/front_signin.html")
@@ -190,17 +184,17 @@ class SigninView(views.MethodView):
         else:
             return restful.params_error(message=form.get_error())
 
-
+# View for showing a user's timetable
 class TimetableView(views.MethodView):
     def get(self, uid=None):
-        # Prefer UID from URL param; fallback to session
         user_id = uid or session.get(Config.FRONT_USER_ID)
         if not user_id:
-            return "用户未登录或未提供UID", 400
+            return "\u7528\u6237\u672a\u767b\u5f55\u6216\u672a\u63d0\u4f9bUID", 400
 
         course_data = Enrollment.get_user_enrollments_with_times(user_id)
         return render_template("front/time_table.html", courses=course_data)
 
+# Route to add a course enrollment for a user
 @bp.route("/add_enrollment/", methods=["POST"])
 @login_required
 def add_enrollment():
@@ -208,24 +202,21 @@ def add_enrollment():
     user_id = session.get(Config.FRONT_USER_ID)
 
     if not user_id:
-        return jsonify({"code": 401, "message": "用户未登录"}), 401
+        return jsonify({"code": 401, "message": "\u7528\u6237\u672a\u767b\u5f55"}), 401
     if not course_id:
-        return jsonify({"code": 400, "message": "请选择一个课程"}), 400
+        return jsonify({"code": 400, "message": "\u8bf7\u9009\u62e9\u4e00\u4e2a\u8bfe\u7a0b"}), 400
 
     course = CourseModel.query.get(course_id)
     if not course:
-        return jsonify({"code": 404, "message": "课程不存在"}), 404
+        return jsonify({"code": 404, "message": "\u8bfe\u7a0b\u4e0d\u5b58\u5728"}), 404
 
-    # Optional: Check if course already enrolled to avoid duplicates
     exists = Enrollment.query.filter_by(user_id=user_id, course_id=course.id).first()
     if exists:
-        return jsonify({"code": 409, "message": "您已选择该课程"}), 409
+        return jsonify({"code": 409, "message": "\u60a8\u5df2\u9009\u62e9\u8be5\u8bfe\u7a0b"}), 409
 
-    # Do not bind timeslot yet
     enrollment = Enrollment(
         user_id=user_id,
         course_id=course.id,
-        # timeslot_id=None，省略
     )
     db.session.add(enrollment)
 
@@ -233,11 +224,11 @@ def add_enrollment():
         db.session.commit()
     except Exception as e:
         db.session.rollback()
-        return jsonify({"code": 500, "message": f"数据库错误：{e}"}), 500
+        return jsonify({"code": 500, "message": f"\u6570\u636e\u5e93\u9519\u8bef\uff1a{e}"}), 500
 
-    return jsonify({"code": 200, "message": "选课成功"}), 200
+    return jsonify({"code": 200, "message": "\u9009\u8bfe\u6210\u529f"}), 200
 
-
+# Route to remove course enrollments
 @bp.route("/remove_enrollment/", methods=["POST"])
 @login_required
 def remove_enrollment():
@@ -251,7 +242,6 @@ def remove_enrollment():
         return jsonify({"code": 400, "message": "No course IDs provided"}), 400
 
     try:
-        # Remove the enrollment records for selected courses
         Enrollment.query.filter(
             Enrollment.user_id == user_id, Enrollment.course_id.in_(course_ids)
         ).delete(synchronize_session=False)
@@ -265,7 +255,7 @@ def remove_enrollment():
         db.session.rollback()
         return jsonify({"code": 500, "message": f"Database error: {e}"}), 500
 
-
+# API route to get a user's current enrolled courses and timeslots
 @bp.route("/my_courses/", methods=["GET"])
 @login_required
 def view_my_courses():
@@ -281,13 +271,12 @@ def view_my_courses():
         if not course:
             continue
 
-        # Get timeslot linked to the enrollment (actual selection)
         ts = enrollment.timeslot
         if ts:
             timeslot_info = {
-                "day_of_week": ts.day_of_week,  # 0=Monday
-                "start_hour": ts.start_hour,  # e.g., 10 for 10am
-                "duration_hours": ts.duration_hours,  # e.g., 2 hours
+                "day_of_week": ts.day_of_week,
+                "start_hour": ts.start_hour,
+                "duration_hours": ts.duration_hours,
             }
         else:
             timeslot_info = None
@@ -300,11 +289,9 @@ def view_my_courses():
             }
         )
 
-    # If frontend loadCourses() expects a pure array, just return list
     return jsonify(course_list), 200
 
-
-# Get course timeslots
+# Return available timeslots for a given course
 @bp.route("/course_timeslots/<int:course_id>/")
 def course_timeslots(course_id):
     course = CourseModel.query.get(course_id)
@@ -323,8 +310,7 @@ def course_timeslots(course_id):
     ]
     return jsonify({"code": 200, "timeslots": timeslots})
 
-
-# Update timeslot for the selected course
+# Update the timeslot associated with an enrollment
 @bp.route("/update_timeslot/", methods=["POST"])
 def update_timeslot():
     course_id = request.form.get("course_id")
@@ -341,7 +327,7 @@ def update_timeslot():
     db.session.commit()
     return jsonify({"code": 200, "message": "Timeslot updated"})
 
-
+# View for managing course preferences (course + timeslot selection UI)
 class PreferenceView(views.MethodView):
     decorators = [login_required]
 
@@ -353,9 +339,10 @@ class PreferenceView(views.MethodView):
             courses=course_data,
         )
 
-
+# Register the class-based views to URL routes
 bp.add_url_rule("/signup/", view_func=SignupView.as_view("signup"))
 bp.add_url_rule("/signin/", view_func=SigninView.as_view("signin"))
 bp.add_url_rule("/timetable/", view_func=TimetableView.as_view("timetable"))
 bp.add_url_rule("/timetable/<uid>", view_func=TimetableView.as_view("timetable_with_uid"))
 bp.add_url_rule("/preference/", view_func=PreferenceView.as_view("preference"))
+
