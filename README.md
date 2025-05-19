@@ -79,7 +79,7 @@ pip install -r requirements.txt
 
 # Setup database 
 flask db init
-flask db migrate -m "comment"
+flask db migrate -m "initial"
 flask db upgrade
 
 # Run the Flask app
